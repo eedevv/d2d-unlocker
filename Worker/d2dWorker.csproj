@@ -7,11 +7,11 @@
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>burger.ico</ApplicationIcon>
+    <ApplicationIcon>d2d.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="burger.ico" />
+    <Content Include="d2d.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
-﻿using FortniteBurger.Properties;
+﻿using d2d.Properties;
 
-namespace FortniteBurger.Classes.Mods
+namespace d2d.Classes.Mods
 {
     class OldAnim
     {

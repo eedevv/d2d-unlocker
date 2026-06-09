@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal static class Utils
     {
@@ -27,7 +27,7 @@ namespace FortniteBurger.Classes
 
         static Utils()
         {
-            HttpClient.DefaultRequestHeaders.Add("User-Agent", "burger");
+            HttpClient.DefaultRequestHeaders.Add("User-Agent", "d2d");
         }
 
         internal static int CalculateMMR(string input)

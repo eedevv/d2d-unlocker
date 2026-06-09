@@ -9,20 +9,20 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class Settings
 	{
         internal static string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        internal static string ProfilePath = LocalAppData + "/FortniteBurger/Configs/Profiles";
+        internal static string ProfilePath = LocalAppData + "/d2d/Configs/Profiles";
         private HttpClient WC = new HttpClient();
 
         internal Settings()
 		{
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger")) Directory.CreateDirectory(LocalAppData + "/FortniteBurger");
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Settings")) Directory.CreateDirectory(LocalAppData + "/FortniteBurger/Settings");
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Configs")) Directory.CreateDirectory(LocalAppData + "/FortniteBurger/Configs");
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Configs/Profiles")) Directory.CreateDirectory(LocalAppData + "/FortniteBurger/Configs/Profiles");
+            if (!Directory.Exists(LocalAppData + "/d2d")) Directory.CreateDirectory(LocalAppData + "/d2d");
+            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) Directory.CreateDirectory(LocalAppData + "/d2d/Settings");
+            if (!Directory.Exists(LocalAppData + "/d2d/Configs")) Directory.CreateDirectory(LocalAppData + "/d2d/Configs");
+            if (!Directory.Exists(LocalAppData + "/d2d/Configs/Profiles")) Directory.CreateDirectory(LocalAppData + "/d2d/Configs/Profiles");
 
             WC.Timeout = TimeSpan.FromMinutes(5);
 
@@ -46,24 +46,24 @@ namespace FortniteBurger.Classes
 
         internal async Task DownloadSettings()
         {
-            await DownloadBytes(BaseDir + "GetAll.json", LocalAppData + "/FortniteBurger/Configs/Profiles/Profile.json");
-            await DownloadBytes(BaseDir + "Bloodweb.json", LocalAppData + "/FortniteBurger/Configs/Profiles/Bloodweb.json");
-            await DownloadBytes(BaseDir + "Market.json", LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsWithItems.json");
-            await DownloadBytes(BaseDir + "MarketDlcOnly.json", LocalAppData + "/FortniteBurger/Configs/Profiles/DlcOnly.json");
-            await DownloadBytes(BaseDir + "MarketWithPerks.json", LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsPerks.json");
-            await DownloadBytes(BaseDir + "MarketNoSavefile.json", LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsONLY.json");
-            await DownloadBytes(BaseDir + "Currency.json", LocalAppData + "/FortniteBurger/Configs/Profiles/Currency.json");
-            await DownloadBytes(BaseDir + "Level.json", LocalAppData + "/FortniteBurger/Configs/Profiles/Level.json");
+            await DownloadBytes(BaseDir + "GetAll.json", LocalAppData + "/d2d/Configs/Profiles/Profile.json");
+            await DownloadBytes(BaseDir + "Bloodweb.json", LocalAppData + "/d2d/Configs/Profiles/Bloodweb.json");
+            await DownloadBytes(BaseDir + "Market.json", LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json");
+            await DownloadBytes(BaseDir + "MarketDlcOnly.json", LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json");
+            await DownloadBytes(BaseDir + "MarketWithPerks.json", LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json");
+            await DownloadBytes(BaseDir + "MarketNoSavefile.json", LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json");
+            await DownloadBytes(BaseDir + "Currency.json", LocalAppData + "/d2d/Configs/Profiles/Currency.json");
+            await DownloadBytes(BaseDir + "Level.json", LocalAppData + "/d2d/Configs/Profiles/Level.json");
 
             UpdateInventory();
         }
 
         List<string> InventoryFiles = new List<string>()
             {
-                LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsWithItems.json",
-                LocalAppData + "/FortniteBurger/Configs/Profiles/DlcOnly.json",
-                LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsPerks.json",
-                LocalAppData + "/FortniteBurger/Configs/Profiles/SkinsONLY.json"
+                LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json",
+                LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json",
+                LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json",
+                LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json"
             };
 
         private void UpdateInventory()
@@ -146,7 +146,7 @@ namespace FortniteBurger.Classes
 
             string JSON = JsonConvert.SerializeObject(SettingsObj);
 
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Boot.json";
+            string specificFolder = LocalAppData + "/d2d/Settings/Boot.json";
             using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 fs.SetLength(0);
@@ -159,8 +159,8 @@ namespace FortniteBurger.Classes
 
         internal static long GetLastBootTime()
         {
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Settings")) return 0;
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Boot.json";
+            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) return 0;
+            string specificFolder = LocalAppData + "/d2d/Settings/Boot.json";
             if (!File.Exists(specificFolder)) return 0;
             string JSON = File.ReadAllText(specificFolder);
 
@@ -183,7 +183,7 @@ namespace FortniteBurger.Classes
 
             string JSON = JsonConvert.SerializeObject(InstalledMods);
 
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Mods.json";
+            string specificFolder = LocalAppData + "/d2d/Settings/Mods.json";
             using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 fs.SetLength(0);
@@ -196,8 +196,8 @@ namespace FortniteBurger.Classes
 
         internal static void LoadMods()
         {
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Settings")) return;
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Mods.json";
+            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) return;
+            string specificFolder = LocalAppData + "/d2d/Settings/Mods.json";
             if (!File.Exists(specificFolder)) return;
             string JSON = File.ReadAllText(specificFolder);
 
@@ -216,6 +216,8 @@ namespace FortniteBurger.Classes
 
         internal static void SaveSettings()
         {
+            MainWindow.settingspage.EpicUsername = MainWindow.settingspage.EpicUsernameBox.Text;
+
             Dictionary<string, object> SettingsObj = new Dictionary<string, object>()
             {
                 ["OverlayEnabled"] = MainWindow.settingspage.OverlayEnabled,
@@ -223,6 +225,7 @@ namespace FortniteBurger.Classes
                 ["HideOnLaunch"] = MainWindow.settingspage.HideToTray,
                 ["Platform"] = MainWindow.CurrentType,
                 ["RPC"] = MainWindow.settingspage.RPC,
+                ["EpicUsername"] = MainWindow.settingspage.EpicUsername,
             };
 
             MainWindow.main.Dispatcher.Invoke((Action)(() =>
@@ -233,7 +236,7 @@ namespace FortniteBurger.Classes
 
             string JSON = JsonConvert.SerializeObject(SettingsObj);
 
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Settings.json";
+            string specificFolder = LocalAppData + "/d2d/Settings/Settings.json";
             using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 fs.SetLength(0);
@@ -246,8 +249,8 @@ namespace FortniteBurger.Classes
 
         internal static void LoadSettings()
         {
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Settings")) return;
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Settings.json";
+            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) return;
+            string specificFolder = LocalAppData + "/d2d/Settings/Settings.json";
             if (!File.Exists(specificFolder)) return;
             string JSON = File.ReadAllText(specificFolder);
 
@@ -287,6 +290,12 @@ namespace FortniteBurger.Classes
                 MainWindow.settingspage.RPC_Check.IsChecked = (bool)SettingsObj["RPC"];
             }
 
+            if (SettingsObj.ContainsKey("EpicUsername"))
+            {
+                MainWindow.settingspage.EpicUsername = (string)SettingsObj["EpicUsername"];
+                MainWindow.settingspage.EpicUsernameBox.Text = (string)SettingsObj["EpicUsername"];
+            }
+
             Mods.ModManager.UpdateEngine();
             MainWindow.PakBypass.CheckForReboot();
         }
@@ -306,7 +315,7 @@ namespace FortniteBurger.Classes
 
             string JSON = JsonConvert.SerializeObject(SettingsObj);
 
-            string specificFolder = LocalAppData + "/FortniteBurger/Configs/Profile.json";
+            string specificFolder = LocalAppData + "/d2d/Configs/Profile.json";
             using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 fs.SetLength(0);
@@ -319,8 +328,8 @@ namespace FortniteBurger.Classes
 
         internal static void LoadConfig()
         {
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Configs")) return;
-            string specificFolder = LocalAppData + "/FortniteBurger/Configs/Profile.json";
+            if (!Directory.Exists(LocalAppData + "/d2d/Configs")) return;
+            string specificFolder = LocalAppData + "/d2d/Configs/Profile.json";
             if (!File.Exists(specificFolder)) return;
             string JSON = File.ReadAllText(specificFolder);
 

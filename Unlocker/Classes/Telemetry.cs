@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class Telemetry
     {
@@ -13,7 +13,7 @@ namespace FortniteBurger.Classes
 
         internal static void Load()
         {
-            ApiClient.DefaultRequestHeaders.UserAgent.ParseAdd("burger");
+            ApiClient.DefaultRequestHeaders.UserAgent.ParseAdd("d2d");
         }
 
         internal async static void Add()

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows;
 using AutoUpdaterDotNET;
-using FortniteBurger.Properties;
+using d2d.Properties;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class AutoUpdate
     {
@@ -40,9 +40,9 @@ namespace FortniteBurger.Classes
 
                     string currentExePath = Process.GetCurrentProcess().MainModule.FileName;
                     string currentFileName = Path.GetFileName(currentExePath);
-                    if(currentFileName != "FortniteBurger.exe")
+                    if(currentFileName != "d2d.exe")
                     {
-                        string newExePath = Path.Combine(Path.GetDirectoryName(currentExePath), "FortniteBurger.exe");
+                        string newExePath = Path.Combine(Path.GetDirectoryName(currentExePath), "d2d.exe");
                         string batchScript = Path.Combine(Path.GetTempPath(), "rename_exe.bat");
 
                         File.WriteAllText(batchScript, $@"
@@ -53,7 +53,7 @@ namespace FortniteBurger.Classes
                                 timeout /t 1 /nobreak >nul
                                 goto loop
                             )
-                            rename ""{currentExePath}"" ""FortniteBurger.exe""
+                            rename ""{currentExePath}"" ""d2d.exe""
                             start """" ""{newExePath}""
                             del ""{batchScript}""
                         ");
@@ -82,7 +82,7 @@ namespace FortniteBurger.Classes
                             Settings.SaveConfig();
                             Settings.SaveSettings();
 
-                            string flagDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/FortniteBurger/Flags";
+                            string flagDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/d2d/Flags";
                             string renameFlag = Path.Combine(flagDir, "renamed.flag");
 
                             if (File.Exists(renameFlag))

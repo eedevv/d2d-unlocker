@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal static class RegCheck
     {
         internal static bool FirstLaunch()
         {
-            RegistryKey MainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\FortniteBurger");
+            RegistryKey MainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\d2d");
 
             using (RegistryKey key = MainKey.CreateSubKey("Run"))
             {

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     public static partial class User32
     {

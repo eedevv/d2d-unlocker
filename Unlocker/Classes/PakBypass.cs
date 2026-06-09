@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class PakBypass
     {

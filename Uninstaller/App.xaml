@@ -1,7 +1,7 @@
-﻿<Application x:Class="BurgerUninstall.App"
+﻿<Application x:Class="d2dUninstall.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BurgerUninstall"
+             xmlns:local="clr-namespace:d2dUninstall"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

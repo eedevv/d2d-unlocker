@@ -4,10 +4,10 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>x64</Platforms>
-    <ApplicationIcon>burger.ico</ApplicationIcon>
+    <ApplicationIcon>d2d.ico</ApplicationIcon>
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
     <Title>Burger Uninstaller</Title>
-    <Authors>Ossie - OssieFromDK</Authors>
+    <Authors>d2d</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Resource Include="Images/closebutton.png" />
-    <Content Include="burger.ico" />
+    <Content Include="d2d.ico" />
   </ItemGroup>
 
   <ItemGroup>

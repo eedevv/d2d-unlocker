@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class GUID
     {
@@ -9,13 +9,13 @@ namespace FortniteBurger.Classes
 
         static GUID()
         {
-            if (!Directory.Exists(Settings.LocalAppData + "/FortniteBurger/Settings"))
-                Directory.CreateDirectory(Settings.LocalAppData + "/FortniteBurger/Settings");
+            if (!Directory.Exists(Settings.LocalAppData + "/d2d/Settings"))
+                Directory.CreateDirectory(Settings.LocalAppData + "/d2d/Settings");
 
-            if (!File.Exists(Settings.LocalAppData + "/FortniteBurger/Settings/UUID.txt"))
-                File.Create(Settings.LocalAppData + "/FortniteBurger/Settings/UUID.txt").Close();
+            if (!File.Exists(Settings.LocalAppData + "/d2d/Settings/UUID.txt"))
+                File.Create(Settings.LocalAppData + "/d2d/Settings/UUID.txt").Close();
 
-            string Text = File.ReadAllText(Settings.LocalAppData + "/FortniteBurger/Settings/UUID.txt");
+            string Text = File.ReadAllText(Settings.LocalAppData + "/d2d/Settings/UUID.txt");
 
             if (!string.IsNullOrEmpty(Text))
             {
@@ -25,7 +25,7 @@ namespace FortniteBurger.Classes
             {
                 string NewGUID = GenerateGUID();
 
-                using (var fs = File.Open(Settings.LocalAppData + "/FortniteBurger/Settings/UUID.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var fs = File.Open(Settings.LocalAppData + "/d2d/Settings/UUID.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     fs.SetLength(0);
                     using (var sw = new StreamWriter(fs))

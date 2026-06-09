@@ -1,7 +1,7 @@
-﻿using FortniteBurger.Properties;
+﻿using d2d.Properties;
 using System.Collections.Generic;
 
-namespace FortniteBurger.Classes.Mods
+namespace d2d.Classes.Mods
 {
     class StretchedRes
     {

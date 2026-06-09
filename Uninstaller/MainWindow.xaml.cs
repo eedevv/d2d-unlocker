@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace BurgerUninstall
+namespace d2dUninstall
 {
     public partial class MainWindow : Window
     {
@@ -21,7 +21,7 @@ namespace BurgerUninstall
 
         List<string> FileNames = new List<string>()
         {
-            "FortniteBurger.exe", 
+            "d2d.exe", 
             "steam_api64.dll", 
             "steam_appid.txt",
             "dbdPath.txt",
@@ -81,7 +81,7 @@ namespace BurgerUninstall
                     }
                 }
 
-                string specificFolder = LocalAppData + "/FortniteBurger/Settings/Mods.json";
+                string specificFolder = LocalAppData + "/d2d/Settings/Mods.json";
                 using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     fs.SetLength(0);
@@ -97,7 +97,7 @@ namespace BurgerUninstall
             // Program //
             if (Program)
             {
-                Process[] BurgerProcesses = Process.GetProcessesByName("FortniteBurger");
+                Process[] BurgerProcesses = Process.GetProcessesByName("d2d");
 
                 if(BurgerProcesses.Length > 0) 
                 {
@@ -133,9 +133,9 @@ namespace BurgerUninstall
             // Settings //
             if (Settings)
             {
-                if (Directory.Exists(LocalAppData + "/FortniteBurger"))
+                if (Directory.Exists(LocalAppData + "/d2d"))
                 {
-                    Directory.Delete(LocalAppData + "/FortniteBurger", true);
+                    Directory.Delete(LocalAppData + "/d2d", true);
                 }
 
                 Settings = false;
@@ -144,7 +144,7 @@ namespace BurgerUninstall
             // Worker Service //
             if (Worker)
             {
-                Process[] WorkerProcesses = Process.GetProcessesByName("BurgerWorker");
+                Process[] WorkerProcesses = Process.GetProcessesByName("d2dWorker");
 
                 if(WorkerProcesses.Length > 0)
                 {
@@ -154,7 +154,7 @@ namespace BurgerUninstall
                     }
                 }
 
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Microsoft/Windows/Start Menu/Programs/Startup/BurgerWorker.exe";
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Microsoft/Windows/Start Menu/Programs/Startup/d2dWorker.exe";
 
                 if (File.Exists(path))
                 {

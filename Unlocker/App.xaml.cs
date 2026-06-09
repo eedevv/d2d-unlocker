@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            Classes.Protection.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             Current.DispatcherUnhandledException += DispatcherOnUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
@@ -22,7 +23,7 @@ namespace FortniteBurger
             string currentExePath = Process.GetCurrentProcess().MainModule.FileName;
             string directory = Path.GetDirectoryName(currentExePath);
             string AppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string flagDir = AppData + "/FortniteBurger/Flags";
+            string flagDir = AppData + "/d2d/Flags";
 
             if (!Directory.Exists(flagDir))
                 Directory.CreateDirectory(flagDir);
@@ -52,7 +53,7 @@ namespace FortniteBurger
                 string randomName = Path.GetRandomFileName().Replace(".", "") + ".exe";
                 string newExePath = Path.Combine(directory, randomName);
 
-                RegistryKey mainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\FortniteBurger");
+                RegistryKey mainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\d2d");
                 using (RegistryKey key = mainKey.CreateSubKey("Info"))
                 {
                     if (key != null)
@@ -100,6 +101,7 @@ namespace FortniteBurger
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            Classes.Protection.SecureCleanup();
             Classes.CloseManager.Close();
         }
 

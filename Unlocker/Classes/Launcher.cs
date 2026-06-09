@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class Launcher
     {

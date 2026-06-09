@@ -181,7 +181,7 @@
   <data name="SkinsWithItems" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SkinsWithItems.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="BurgerWorker" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BurgerWorker.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="d2dWorker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\d2dWorker.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

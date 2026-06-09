@@ -4,7 +4,7 @@ using System.Windows;
 using System.Drawing;
 using System;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class SysTray
     {
@@ -15,7 +15,7 @@ namespace FortniteBurger.Classes
             MainSysIcon = new TaskbarIcon();
             MainSysIcon.Visibility = Visibility.Collapsed;
             MainSysIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-            MainSysIcon.ToolTip = "Fortnite Burger";
+            MainSysIcon.ToolTip = "d2d";
 
             MainSysIcon.TrayMouseDoubleClick += MainSysIcon_TrayMouseDoubleClick;
         }

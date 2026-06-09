@@ -5,7 +5,7 @@ using System.Windows.Interop;
 using System.Timers;
 using System.Threading.Tasks;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class Overlay : Window
     {

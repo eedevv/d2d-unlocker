@@ -4,7 +4,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>x64</Platforms>
-    <ApplicationIcon>burger.ico</ApplicationIcon>
+    <ApplicationIcon>d2d.ico</ApplicationIcon>
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Title>.</Title>
@@ -17,7 +17,7 @@
     <FileVersion>1.0</FileVersion>
     <Description>...</Description>
     <PackageReleaseNotes>...</PackageReleaseNotes>
-    <AssemblyName>svchost</AssemblyName>
+    <AssemblyName>d2d</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,7 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="burger.ico" />
+    <Content Include="d2d.ico" />
   </ItemGroup>
 
   <ItemGroup>

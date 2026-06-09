@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class BP : Page
     {

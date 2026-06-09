@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortniteBurger", "FortniteBurger.csproj", "{C527806E-53D0-47B8-B183-B3936389ECFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d2d", "d2d.csproj", "{C527806E-53D0-47B8-B183-B3936389ECFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

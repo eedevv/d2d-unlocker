@@ -1,8 +1,8 @@
-﻿using FortniteBurger.Properties;
+﻿using d2d.Properties;
 using System.Collections.Generic;
 using System.Windows.Documents;
 
-namespace FortniteBurger.Classes.Mods
+namespace d2d.Classes.Mods
 {
     internal class FOV
     {

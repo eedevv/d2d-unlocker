@@ -2,13 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class Settings : Page
     {
         internal bool OverlayEnabled = true;
         internal bool HideToTray = true;
         internal bool RPC = true;
+        internal string EpicUsername = "";
 
         public Settings()
         {
@@ -51,19 +52,22 @@ namespace FortniteBurger
             {
                 MainWindow.CurrentType = "EGS";
                 TypeBox.Text = "Epic Games";
+                EpicUsernameGrid.Visibility = Visibility.Visible;
 
                 Classes.Mods.ModManager.UpdateEngine();
             }
             else if(MainWindow.CurrentType == "EGS")
             {
+                EpicUsername = EpicUsernameBox.Text;
                 MainWindow.CurrentType = "MS";
-
                 TypeBox.Text = "MS";
+                EpicUsernameGrid.Visibility = Visibility.Collapsed;
             }
             else if (MainWindow.CurrentType == "MS")
             {
                 MainWindow.CurrentType = "Steam";
                 TypeBox.Text = "Steam";
+                EpicUsernameGrid.Visibility = Visibility.Collapsed;
 
                 Classes.Mods.ModManager.UpdateEngine();
             }
@@ -75,12 +79,15 @@ namespace FortniteBurger
             {
                 case "Steam":
                     TypeBox.Text = "Steam";
+                    EpicUsernameGrid.Visibility = Visibility.Collapsed;
                     break;
                 case "EGS":
                     TypeBox.Text = "Epic Games";
+                    EpicUsernameGrid.Visibility = Visibility.Visible;
                     break;
                 case "MS":
                     TypeBox.Text = "MS";
+                    EpicUsernameGrid.Visibility = Visibility.Collapsed;
                     break;
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class CloseManager
     {
@@ -12,7 +12,7 @@ namespace FortniteBurger.Classes
                 MainWindow.ErrorLog.CreateLog(errormsg);
             }
 
-
+            Protection.SecureCleanup();
             FiddlerCore.StopFiddlerCore();
             Settings.SaveConfig();
             Settings.SaveSettings();
@@ -23,7 +23,7 @@ namespace FortniteBurger.Classes
                 Overlay.StopTimer();
             }
 
-            string flagDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/FortniteBurger/Flags";
+            string flagDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/d2d/Flags";
             string renameFlag = Path.Combine(flagDir, "renamed.flag");
 
             if (File.Exists(renameFlag))

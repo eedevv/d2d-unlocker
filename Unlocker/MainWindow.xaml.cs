@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Input;
-using FortniteBurger.Classes;
+using d2d.Classes;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class MainWindow : Window
     {
@@ -67,7 +67,7 @@ namespace FortniteBurger
 
         internal void UpdateCheckDone()
         {
-            this.VersionText.Text = "Burger: v" + CurrVersion;
+            this.VersionText.Text = "d2d: v" + CurrVersion;
             this.DbdVersionText.Text = "DBD: v" + DBDVersion;
 
             try {
@@ -82,11 +82,10 @@ namespace FortniteBurger
 
             if(Classes.RegCheck.FirstLaunch())
             {
-                System.Windows.MessageBox.Show("Welcome to Fortnite Burger, this message will only show once. \n\nPlease make sure to check the settings page for any changes you may want to change. \n\n!!! ------------------------------------- !!!\n\nIf you have paid for this tool you have been scammed.\nFortnite Burger is completely free and is not paid in any ways. \n\nTake Care \n/Ossie");
+                System.Windows.MessageBox.Show("Welcome to d2d, this message will only show once. \n\nPlease make sure to check the settings page for any changes you may want to change. \n\n!!! ------------------------------------- !!!\n\nIf you have paid for this tool you have been scammed.\nd2d is completely free and is not paid in any ways.");
             }
 
-            System.Windows.MessageBox.Show("Hey! \n\nHave you seen that Fortnite Burger v2 has been released? \nThe version you are currently using, will not recieve further updates in the future, you should consider switching to the new one! \n\nTake Care \n/Ossie");
-            Launcher.LaunchWeb("https://github.com/Fortnite-Burger/DeadByDaylight-Unlocker-v2/releases/latest");
+            Launcher.LaunchWeb("https://github.com/eedevv/d2d-unlocker/releases/latest");
         }
 
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -123,7 +122,7 @@ namespace FortniteBurger
 
         private void GoWeb(object sender, RoutedEventArgs e)
         {
-            Classes.Launcher.LaunchWeb("https://fortniteburger.vip");
+            Classes.Launcher.LaunchWeb("https://github.com/eedevv/d2d-unlocker");
         }
 
         private void GoDiscord(object sender, RoutedEventArgs e)

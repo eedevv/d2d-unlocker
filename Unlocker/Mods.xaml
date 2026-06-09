@@ -1,9 +1,9 @@
-﻿<Page x:Class="FortniteBurger.Mods"
+﻿<Page x:Class="d2d.Mods"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FortniteBurger"
+      xmlns:local="clr-namespace:d2d"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d" 
       d:DesignHeight="615" d:DesignWidth="850"  
@@ -72,14 +72,14 @@
         <Image Source="Images/Background.png" Stretch="UniformToFill"/>
 
         <Grid x:Name="MS" Visibility="Collapsed">
-            <TextBlock Text="Fortnite Burger" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+            <TextBlock Text="d2d" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
             <TextBlock Text="Mods" FontSize="50" Margin="0,150,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
 
             <TextBlock Text="Microsoft Store can't use mods" FontSize="50" Margin="0,300,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold"/>
         </Grid>
 
         <Grid Visibility="Visible">
-            <TextBlock Text="Fortnite Burger" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+            <TextBlock Text="d2d" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
             <TextBlock Text="Mods" FontSize="50" Margin="0,150,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
 
             <TextBlock Text="Mods don't work anymore" FontSize="50" Margin="0,300,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold"/>
@@ -88,7 +88,7 @@
         <Grid x:Name="Allowed" Visibility="Collapsed">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid>
-                    <TextBlock Text="Fortnite Burger" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+                    <TextBlock Text="d2d" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
                     <TextBlock Text="Mods" FontSize="50" Margin="0,150,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
 
                     <!-- FOV -->
@@ -111,13 +111,15 @@
                         <!-- Config Area -->
                         <Button Visibility="Visible" Click="Save" Tag="FOV" Style="{StaticResource ModButtonStyle}" x:Name="FOV_SaveButton"  Content="Save"  FontSize="18" Margin="550,310,0,0" HorizontalContentAlignment="Center" Width="125" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"/>
 
-                        <!-- Config IteFOV -->
-                        <Label x:Name="FOV_Input1_Header" Visibility="Visible" FontSize="20" Margin="0,285,550,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Killer FOV" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" />
-                        <TextBox x:Name="FOV_Input1" PreviewTextInput="NumberValidationTextBox" Tag="KillerFOV" Visibility="Visible" Text="90" FontSize="17" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" Foreground="White" Background="#151318" BorderBrush="#3A3B3C" BorderThickness="1" Margin="0,310,550,0" Width="125" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+                        <!-- Killer FOV Slider -->
+                        <Label x:Name="FOV_KillerLabel" Visibility="Visible" FontSize="20" Margin="0,270,550,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Killer FOV" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" />
+                        <Slider x:Name="FOV_KillerSlider" Tag="KillerFOV" Visibility="Visible" Minimum="60" Maximum="120" TickFrequency="1" IsSnapToTickEnabled="True" Value="87" Margin="0,296,575,0" Width="150" VerticalAlignment="Top" HorizontalAlignment="Center" ValueChanged="FOV_Slider_Changed"/>
+                        <Label x:Name="FOV_KillerValue" Visibility="Visible" FontSize="16" Margin="0,295,550,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="87" VerticalContentAlignment="Top" HorizontalContentAlignment="Right" Foreground="OrangeRed" FontFamily="Tw Cen MT Condensed Extra Bold" Width="40"/>
 
-                        <!-- Config Item2 -->
-                        <Label x:Name="FOV_Input2_Header" Visibility="Visible" FontSize="20" Margin="0,285,250,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Survivor FOV" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" />
-                        <TextBox x:Name="FOV_Input2" PreviewTextInput="NumberValidationTextBox" Tag="SurvivorFOV"  Visibility="Visible" Text="87" FontSize="17" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" Foreground="White" Background="#151318" BorderBrush="#3A3B3C" BorderThickness="1" Margin="0,310,250,0" Width="125" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+                        <!-- Survivor FOV Slider -->
+                        <Label x:Name="FOV_SurvivorLabel" Visibility="Visible" FontSize="20" Margin="0,270,250,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Survivor FOV" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" />
+                        <Slider x:Name="FOV_SurvivorSlider" Tag="SurvivorFOV" Visibility="Visible" Minimum="60" Maximum="120" TickFrequency="1" IsSnapToTickEnabled="True" Value="90" Margin="0,296,275,0" Width="150" VerticalAlignment="Top" HorizontalAlignment="Center" ValueChanged="FOV_Slider_Changed"/>
+                        <Label x:Name="FOV_SurvivorValue" Visibility="Visible" FontSize="16" Margin="0,295,250,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="90" VerticalContentAlignment="Top" HorizontalContentAlignment="Right" Foreground="OrangeRed" FontFamily="Tw Cen MT Condensed Extra Bold" Width="40"/>
                     </Grid>
 
                     <!-- Killer Revealer -->

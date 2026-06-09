@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 
-namespace FortniteBurger
+namespace d2d
 {
     public partial class Mods : Page
     {
@@ -20,8 +21,10 @@ namespace FortniteBurger
             Values["FOV_InstallButton"] = FOV_InstallButton;
             Values["FOV_AfterInstall"] = FOV_AfterInstall;
             Values["FOV_Config"] = FOV_Config;
-            Values["FOV_Input1"] = FOV_Input1;
-            Values["FOV_Input2"] = FOV_Input2;
+            Values["FOV_KillerSlider"] = FOV_KillerSlider;
+            Values["FOV_SurvivorSlider"] = FOV_SurvivorSlider;
+            Values["FOV_KillerValue"] = FOV_KillerValue;
+            Values["FOV_SurvivorValue"] = FOV_SurvivorValue;
 
             Values["KR_InstallButton"] = KR_InstallButton;
             Values["KR_AfterInstall"] = KR_AfterInstall;
@@ -93,6 +96,30 @@ namespace FortniteBurger
                         if (Values[ModName + "_Input1_Check"].Tag == kvp.Key)
                             Values[ModName + "_Input1_Check"].IsChecked = kvp.Value == "True";
                     }
+
+                    if (ModName == "FOV")
+                    {
+                        if (Values.ContainsKey(ModName + "_KillerSlider") && kvp.Key == "KillerFOV")
+                        {
+                            var slider = Values[ModName + "_KillerSlider"] as Slider;
+                            if (slider != null && double.TryParse(kvp.Value, out double val))
+                            {
+                                slider.Value = val;
+                                var lbl = Values[ModName + "_KillerValue"] as Label;
+                                if (lbl != null) lbl.Content = val.ToString();
+                            }
+                        }
+                        if (Values.ContainsKey(ModName + "_SurvivorSlider") && kvp.Key == "SurvivorFOV")
+                        {
+                            var slider = Values[ModName + "_SurvivorSlider"] as Slider;
+                            if (slider != null && double.TryParse(kvp.Value, out double val))
+                            {
+                                slider.Value = val;
+                                var lbl = Values[ModName + "_SurvivorValue"] as Label;
+                                if (lbl != null) lbl.Content = val.ToString();
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -114,7 +141,7 @@ namespace FortniteBurger
         private void Browse(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
-            openFileDlg.Title = "Fortnite Burger Custom Mods";
+            openFileDlg.Title = "d2d Custom Mods";
             openFileDlg.DefaultExt = ".pak";
             openFileDlg.Filter = "Pak/Bak Files|*.pak;*.bak";
             openFileDlg.InitialDirectory = Environment.CurrentDirectory;
@@ -157,7 +184,16 @@ namespace FortniteBurger
 
             Dictionary<string, string> NewINI = new Dictionary<string, string>();
 
-            if (InstallType != "RES")
+            if (InstallType == "FOV")
+            {
+                var killerSlider = Values[InstallType + "_KillerSlider"] as Slider;
+                var survivorSlider = Values[InstallType + "_SurvivorSlider"] as Slider;
+                if (killerSlider != null)
+                    NewINI["KillerFOV"] = ((int)killerSlider.Value).ToString();
+                if (survivorSlider != null)
+                    NewINI["SurvivorFOV"] = ((int)survivorSlider.Value).ToString();
+            }
+            else if (InstallType != "RES")
             {
                 if (Values.ContainsKey(InstallType + "_Input1"))
                     NewINI[Values[InstallType + "_Input1"].Tag as string] = Values[InstallType + "_Input1"].Text;
@@ -188,6 +224,21 @@ namespace FortniteBurger
 
             Values[InstallType + "_AfterInstall"].Visibility = Visibility.Hidden;
             Values[InstallType + "_InstallButton"].Visibility = Visibility.Visible;
+        }
+
+        internal void FOV_Slider_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider slider = sender as Slider;
+            if (slider == null) return;
+
+            if (slider.Name == "FOV_KillerSlider" && FOV_KillerValue != null)
+            {
+                FOV_KillerValue.Content = ((int)slider.Value).ToString();
+            }
+            else if (slider.Name == "FOV_SurvivorSlider" && FOV_SurvivorValue != null)
+            {
+                FOV_SurvivorValue.Content = ((int)slider.Value).ToString();
+            }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

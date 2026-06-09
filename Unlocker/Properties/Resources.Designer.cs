@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FortniteBurger.Properties {
+namespace d2d.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FortniteBurger.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FortniteBurger.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("d2d.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -73,9 +73,9 @@ namespace FortniteBurger.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] BurgerWorker {
+        internal static byte[] d2dWorker {
             get {
-                object obj = ResourceManager.GetObject("BurgerWorker", resourceCulture);
+                object obj = ResourceManager.GetObject("d2dWorker", resourceCulture);
                 return ((byte[])(obj));
             }
         }

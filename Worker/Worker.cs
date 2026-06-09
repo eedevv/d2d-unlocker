@@ -6,7 +6,7 @@ using NetDiscordRpc;
 using Newtonsoft.Json;
 using NetDiscordRpc.RPC;
 
-namespace BurgerWorker
+namespace d2dWorker
 {
     internal class Worker
     {
@@ -19,9 +19,9 @@ namespace BurgerWorker
             RPCClient = new DiscordRPC("1173063895582257162");
             bool RPCActive = false;
             bool HasSet = false;
-            string fileName = "FortniteBurger";
+            string fileName = "d2d";
 
-            RegistryKey MainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\FortniteBurger");
+            RegistryKey MainKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\d2d");
             using (RegistryKey key = MainKey.CreateSubKey("Info"))
             {
                 if (key != null)
@@ -70,12 +70,12 @@ namespace BurgerWorker
                             Assets = new Assets()
                             {
                                 LargeImageKey = "noburger",
-                                LargeImageText = "Fortnite Burger - Free Unlocker",
+                                LargeImageText = "d2d - Free Unlocker",
                             },
                             Buttons = new Button[]
                             {
                                 new() { Label = "Discord", Url = "https://discord.gg/gDWBGtVkKJ" },
-                                new() { Label = "Download", Url = "https://github.com/OssieFromDK/DeadByDaylight-Unlocker/releases/latest" }
+                                new() { Label = "Download", Url = "https://github.com/eedevv/d2d-unlocker/releases/latest" }
                             }
                         });
 
@@ -105,8 +105,8 @@ namespace BurgerWorker
         internal static void CheckForRPCSettings()
         {
 
-            if (!Directory.Exists(LocalAppData + "/FortniteBurger/Settings")) return;
-            string specificFolder = LocalAppData + "/FortniteBurger/Settings/Settings.json";
+            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) return;
+            string specificFolder = LocalAppData + "/d2d/Settings/Settings.json";
             if (!File.Exists(specificFolder)) return;
             string JSON = File.ReadAllText(specificFolder);
 

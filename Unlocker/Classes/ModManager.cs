@@ -1,10 +1,10 @@
-﻿using FortniteBurger.Properties;
+﻿using d2d.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace FortniteBurger.Classes.Mods
+namespace d2d.Classes.Mods
 {
     internal class ModManager
     {

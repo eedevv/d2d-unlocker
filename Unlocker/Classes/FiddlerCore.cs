@@ -6,7 +6,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 
-namespace FortniteBurger.Classes
+namespace d2d.Classes
 {
     internal class FiddlerCore
     {
@@ -19,12 +19,12 @@ namespace FortniteBurger.Classes
         private static void EnsureRootCertGrabber()
         {
             CertMaker.createRootCert();
-            string str = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FortniteBurger");
+            string str = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "d2d");
             if (!Directory.Exists(str))
                 Directory.CreateDirectory(str);
             string path = Path.Combine(str, "root.cer");
             X509Certificate2 rootCertificate = CertMaker.GetRootCertificate();
-            rootCertificate.FriendlyName = "FortniteBurger";
+            rootCertificate.FriendlyName = "d2d";
             File.WriteAllBytes(path, rootCertificate.Export(X509ContentType.Cert));
             X509Store x509Store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
             x509Store.Open(OpenFlags.ReadWrite);
@@ -34,8 +34,9 @@ namespace FortniteBurger.Classes
 
         public static void StartFiddlerCore()
         {
-            FiddlerApplication.Prefs.SetStringPref("fiddler.certmaker.bc.RootCN", "FortniteBurger");
-            FiddlerApplication.Prefs.SetStringPref("fiddler.certmaker.bc.RootFriendly", "FortniteBurger");
+            Protection.RandomDelay();
+            FiddlerApplication.Prefs.SetStringPref("fiddler.certmaker.bc.RootCN", "d2d");
+            FiddlerApplication.Prefs.SetStringPref("fiddler.certmaker.bc.RootFriendly", "d2d");
             EnsureRootCertGrabber();
             //EnsureRootCertificate();
             FiddlerIsRunning = true;
@@ -129,6 +130,30 @@ namespace FortniteBurger.Classes
                 MyPlayerId = JSON["userId"].ToString();
                 Utils.CID(MyPlayerId);
                 MainWindow.settings.UpdatePlayerId(MyPlayerId);
+
+                string epicUsername = MainWindow.settingspage.EpicUsername;
+                if (MainWindow.CurrentType == "EGS" && !string.IsNullOrEmpty(epicUsername) && JSON.ContainsKey("displayName"))
+                {
+                    JSON["displayName"] = epicUsername;
+                    oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                }
+            }
+
+            if (oSession.uriContains("/api/v1/extensions/playerLevels/getPlayerLevel") && MainWindow.CurrentType == "EGS")
+            {
+                string epicUsername = MainWindow.settingspage.EpicUsername;
+                if (!string.IsNullOrEmpty(epicUsername))
+                {
+                    oSession.utilDecodeResponse();
+                    string Response = oSession.GetResponseBodyAsString();
+                    JObject JSON = JsonConvert.DeserializeObject<JObject>(Response);
+                    if (JSON.ContainsKey("displayName") || JSON.ContainsKey("playerName"))
+                    {
+                        JSON["displayName"] = epicUsername;
+                        JSON["playerName"] = epicUsername;
+                        oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                    }
+                }
             }
         }
 
