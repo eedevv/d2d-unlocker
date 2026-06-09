@@ -13,159 +13,115 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <Image x:Key="home" Source="Images/home.png"/>
-            <Image x:Key="discord" Source="Images/discord.png"/>
-            <Image x:Key="website" Source="Images/web.png"/>
-            <Image x:Key="close" Source="Images/close.png"/>
-            <Image x:Key="bp" Source="Images/bp.png"/>
-            <Image x:Key="cookie" Source="Images/cookie.png"/>
-            <Image x:Key="tome" Source="Images/tome.png"/>
-            <Image x:Key="profile" Source="Images/sweater.png"/>
-            <Image x:Key="mods" Source="Images/mods.png"/>
-            <Image x:Key="settings" Source="Images/settings.png"/>
-            <SolidColorBrush x:Key="Button.NOBG" Color="Transparent"/>
-            <Style x:Key="NOBG" TargetType="Button">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Name="border" BorderThickness="0" BorderBrush="Transparent" Background="Transparent">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" Value="0.8"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
-
     <Grid>
-        <Image Source="Images/Background.png" Stretch="UniformToFill"/>
+        <Border Background="{StaticResource BgDark}" CornerRadius="8" Margin="0">
+            <Grid>
+                <!-- Title Bar -->
+                <Border Background="{StaticResource BgNav}" Height="32" VerticalAlignment="Top" MouseDown="TopBar_MouseDown">
+                    <Grid>
+                        <TextBlock Text="d2d" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+                            <Button x:Name="MinimizeButton" Click="Minimize_Click" Width="28" Height="28" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                <TextBlock Text="&#x2014;" FontSize="12" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                            <Button x:Name="CloseButton" Click="Close_Click" Width="28" Height="28" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                <TextBlock Text="&#x2715;" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-        <Image Source="Images/Sidebar.png" HorizontalAlignment="Left" Width="100" Margin="0,25,0,0" Stretch="UniformToFill"/>
-        <Image MouseDown="TopBar_MouseDown" Source="Images/Topbar.png" VerticalAlignment="Top" Height="35" Stretch="UniformToFill"/>
+                <!-- Sidebar -->
+                <Border Background="{StaticResource BgNav}" Width="75" HorizontalAlignment="Left" Margin="0,32,0,0">
+                    <StackPanel>
+                        <Button Style="{StaticResource SidebarButton}" Click="HomePage_Click" Margin="0,8,0,0">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Home" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Home" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="Cookie_Click">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="User" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Cookie" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="Tome_Click">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Book" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Tome" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="BP_Click">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Star" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="BP" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="Profile_Click">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Suitcase" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Profile" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="Settings_Click">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Gear" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Settings" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="GoDiscord">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Comment" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="Discord" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButton}" Click="GoWeb">
+                            <StackPanel>
+                                <fa:ImageAwesome Icon="Globe" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
+                                <TextBlock Text="GitHub" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
 
-        <TextBlock x:Name="UpdateText" Text="" FontSize="40" Margin="105,0,0,25" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+                <!-- Content Area -->
+                <Border Background="{StaticResource BgNav}" Margin="75,32,0,0" BorderThickness="1,0,0,0" BorderBrush="#2A3344">
+                    <!-- Home Content -->
+                    <Grid x:Name="HomeContent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-        <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="White" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="105,250,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="White" Icon="Check" Height="48" Width="48" Margin="105,250,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="White" Icon="Times" Height="48" Width="48" Margin="105,250,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <TextBlock Text="d2d" FontSize="40" Margin="105,100,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <Button x:Name="Launch" Content="Launch" 
-                Margin="105,250,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Impact"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="200"
-                Height="75"
-                Visibility="Visible"
-                Click="Launch_Pressed"/>
+                        <StackPanel Grid.Row="0" Margin="0,60,0,0" HorizontalAlignment="Center">
+                            <TextBlock Text="d2d" FontSize="64" FontWeight="Bold" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Dead by Daylight Unlocker" FontSize="20" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                            <TextBlock x:Name="VersionText" Text="d2d: v2.0" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,4,0,0" Opacity="0.5"/>
+                            <TextBlock x:Name="DbdVersionText" Text="DBD: v7.2.3" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Opacity="0.5"/>
+                        </StackPanel>
 
-        <Button Content="{StaticResource home}" Margin="12,40,0,0" VerticalAlignment="Top" Height="75"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30"
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="HomePage_Click"/>
+                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="0,0,0,16"/>
+                            <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="#4CAF50" Icon="Check" Height="48" Width="48" Margin="0,0,0,16"/>
+                            <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Times" Height="48" Width="48" Margin="0,0,0,16"/>
+                            <TextBlock x:Name="UpdateText" Text="" FontSize="16" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                            <Button x:Name="Launch" Content="LAUNCH" Style="{StaticResource ActionButton}" Width="220" Height="56" FontSize="18" Click="Launch_Pressed"/>
+                        </StackPanel>
 
-        <Button Content="{StaticResource website}" Margin="12,145,0,0" VerticalAlignment="Top" Height="75"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="GoWeb"/>
+                        <StackPanel Grid.Row="2" Margin="0,0,0,24" HorizontalAlignment="Center">
+                            <Button Content="&#x1F517; Latest Release" Style="{StaticResource SecondaryButton}" Height="32" FontSize="11" Click="OpenLatestRelease" HorizontalAlignment="Center" Padding="16,0"/>
+                        </StackPanel>
+                    </Grid>
 
-        <Button Content="{StaticResource discord}" Margin="12,245,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="GoDiscord" Height="75" VerticalAlignment="Top"/>
-
-        <Button Content="{StaticResource profile}" Margin="12,345,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="Profile_Click" VerticalAlignment="Top" Height="75"/>
-
-        <Button Content="{StaticResource mods}" Margin="12,445,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="Mods_Click" Height="75" VerticalAlignment="Top"/>
-
-        <Button Content="{StaticResource settings}" Margin="12,545,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Arial"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Left" 
-                Width="75"
-                Click="Settings_Click" Height="75" VerticalAlignment="Top"/>
-
-        <Button Name="CloseButton"
-            Click="Close_Click"
-            Background="Transparent"
-            BorderBrush="Transparent"
-            BorderThickness="0" 
-            Padding="-4"
-            Style="{DynamicResource NOBG}"
-            Width="35"
-            Height="35"
-            Margin="915,0,0,615">
-            <Image Source="Images/close_small.png"/>
-        </Button>
-
-        <Button Name="MinimizeButton"
-            Click="Minimize_Click"
-            Background="Transparent"
-            BorderBrush="Transparent"
-            BorderThickness="0" 
-            Padding="-4"
-            Style="{DynamicResource NOBG}"
-            Width="35"
-            Height="35"
-            Margin="845,0,0,615">
-            <Image Source="Images/minimize.png"/>
-        </Button>
-
-        <TextBlock Text="d2d" FontSize="75" Margin="105,0,0,400" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBlock Text="Dead by Daylight Tool" FontSize="50" Margin="105,0,0,200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBlock x:Name="VersionText" Text="d2d: v2.0" FontSize="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Opacity="0.1" Foreground="DarkGray" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBlock x:Name="DbdVersionText" Text="DBD: v7.2.3" FontSize="10" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Opacity="0.1" Foreground="DarkGray" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-
-        <Frame x:Name="TotalFrame" NavigationUIVisibility="Hidden" Margin="0,35,0,0"/>
-        <Frame x:Name="MainFrame" Margin="100,35,0,0" NavigationUIVisibility="Hidden"/>
-
+                    <!-- Frame for page navigation -->
+                    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed"/>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

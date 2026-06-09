@@ -127,32 +127,57 @@ namespace d2d.Classes
                 string Response = oSession.GetResponseBodyAsString();
                 JObject JSON = JsonConvert.DeserializeObject<JObject>(Response);
 
-                MyPlayerId = JSON["userId"].ToString();
-                Utils.CID(MyPlayerId);
-                MainWindow.settings.UpdatePlayerId(MyPlayerId);
-
-                string epicUsername = MainWindow.settingspage.EpicUsername;
-                if (MainWindow.CurrentType == "EGS" && !string.IsNullOrEmpty(epicUsername) && JSON.ContainsKey("displayName"))
+                MyPlayerId = JSON["userId"]?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(MyPlayerId))
                 {
-                    JSON["displayName"] = epicUsername;
-                    oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                    Utils.CID(MyPlayerId);
+                    MainWindow.settings.UpdatePlayerId(MyPlayerId);
+                }
+
+                string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
+                if (!string.IsNullOrEmpty(epicUsername))
+                {
+                    if (JSON.ContainsKey("displayName"))
+                    {
+                        JSON["displayName"] = epicUsername;
+                        oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                        MainWindow.ErrorLog.CreateLog($"Spoofed displayName to {epicUsername} at auth/provider");
+                    }
                 }
             }
 
-            if (oSession.uriContains("/api/v1/extensions/playerLevels/getPlayerLevel") && MainWindow.CurrentType == "EGS")
+            if (oSession.uriContains("/api/v1/extensions/playerLevels/getPlayerLevel")
+                || oSession.uriContains("/api/v1/extensions/playerLevels/earnPlayerXp")
+                || oSession.uriContains("/api/v1/player/identity")
+                || oSession.uriContains("/fortnite/api/game/v2/profile"))
             {
-                string epicUsername = MainWindow.settingspage.EpicUsername;
+                string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
                 if (!string.IsNullOrEmpty(epicUsername))
                 {
                     oSession.utilDecodeResponse();
                     string Response = oSession.GetResponseBodyAsString();
-                    JObject JSON = JsonConvert.DeserializeObject<JObject>(Response);
-                    if (JSON.ContainsKey("displayName") || JSON.ContainsKey("playerName"))
+                    if (string.IsNullOrEmpty(Response)) return;
+                    try
                     {
-                        JSON["displayName"] = epicUsername;
-                        JSON["playerName"] = epicUsername;
-                        oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                        JObject JSON = JsonConvert.DeserializeObject<JObject>(Response);
+                        bool modified = false;
+                        if (JSON.ContainsKey("displayName"))
+                        {
+                            JSON["displayName"] = epicUsername;
+                            modified = true;
+                        }
+                        if (JSON.ContainsKey("playerName"))
+                        {
+                            JSON["playerName"] = epicUsername;
+                            modified = true;
+                        }
+                        if (modified)
+                        {
+                            oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
+                            MainWindow.ErrorLog.CreateLog($"Spoofed name to {epicUsername}");
+                        }
                     }
+                    catch { }
                 }
             }
         }

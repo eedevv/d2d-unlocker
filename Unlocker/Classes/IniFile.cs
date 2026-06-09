@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace d2d.Classes.Mods
+namespace d2d.Classes
 {
     class IniFile
     {

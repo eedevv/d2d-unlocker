@@ -16,7 +16,7 @@ namespace d2d.Classes
             FiddlerCore.StopFiddlerCore();
             Settings.SaveConfig();
             Settings.SaveSettings();
-            Settings.SaveMods();
+            Settings.SaveFOVSettings();
 
             if (Overlay.timer != null)
             {

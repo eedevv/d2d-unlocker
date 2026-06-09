@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace d2d.Classes
             }
         }
 
-        private static string BaseDir = "https://raw.githubusercontent.com/Fortnite-Burger/DeadByDaylight-Unlocker/main/MarketFiles/";
+        private static string BaseDir = "https://raw.githubusercontent.com/eedevv/d2d-unlocker/main/MarketFiles/";
 
         internal async Task DownloadSettings()
         {
@@ -170,48 +169,45 @@ namespace d2d.Classes
             return (long)SettingsObj["lastBoot"];
         }
 
-        internal static void SaveMods()
+        internal static void SaveFOVSettings()
         {
-            List<string> InstalledMods = new List<string>();
-
-            foreach(KeyValuePair<string, dynamic> KVP in Mods.ModManager.Mods) {
-                if((KVP.Value).IsInstalled)
-                {
-                    InstalledMods.Add(KVP.Key);
-                }
-            }
-
-            string JSON = JsonConvert.SerializeObject(InstalledMods);
-
-            string specificFolder = LocalAppData + "/d2d/Settings/Mods.json";
-            using (var fs = File.Open(specificFolder, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            var fovSettings = new Dictionary<string, object>
+            {
+                ["KillerFOV"] = MainWindow.settingspage.FOV_KillerSlider.Value.ToString(),
+                ["SurvivorFOV"] = MainWindow.settingspage.FOV_SurvivorSlider.Value.ToString()
+            };
+            string json = JsonConvert.SerializeObject(fovSettings);
+            string path = LocalAppData + "/d2d/Settings/FOV.json";
+            var dir = System.IO.Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            using (var fs = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 fs.SetLength(0);
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.Write(JSON);
-                }
+                using (var sw = new StreamWriter(fs)) sw.Write(json);
             }
         }
 
-        internal static void LoadMods()
+        internal static void LoadFOVSettings()
         {
-            if (!Directory.Exists(LocalAppData + "/d2d/Settings")) return;
-            string specificFolder = LocalAppData + "/d2d/Settings/Mods.json";
-            if (!File.Exists(specificFolder)) return;
-            string JSON = File.ReadAllText(specificFolder);
-
-            if (string.IsNullOrEmpty(JSON)) return;
-            List<string> InstalledMods = JsonConvert.DeserializeObject<List<string>>(JSON);
-
-            foreach(string Mod in InstalledMods)
+            string path = LocalAppData + "/d2d/Settings/FOV.json";
+            if (!File.Exists(path)) return;
+            string json = File.ReadAllText(path);
+            if (string.IsNullOrEmpty(json)) return;
+            try
             {
-                MainWindow.mods.SetIsInstalled(Mod);
-                Mods.ModManager.Mods[Mod].IsInstalled = true;
+                var settings = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                if (settings.ContainsKey("KillerFOV") && double.TryParse(settings["KillerFOV"], out double kfov))
+                {
+                    MainWindow.settingspage.FOV_KillerSlider.Value = kfov;
+                    MainWindow.settingspage.FOV_KillerValue.Content = ((int)kfov).ToString();
+                }
+                if (settings.ContainsKey("SurvivorFOV") && double.TryParse(settings["SurvivorFOV"], out double sfov))
+                {
+                    MainWindow.settingspage.FOV_SurvivorSlider.Value = sfov;
+                    MainWindow.settingspage.FOV_SurvivorValue.Content = ((int)sfov).ToString();
+                }
             }
-
-            Mods.ModManager.LoadModsConfig();
-            Mods.ModManager.CheckInstalled();
+            catch { }
         }
 
         internal static void SaveSettings()
@@ -296,7 +292,7 @@ namespace d2d.Classes
                 MainWindow.settingspage.EpicUsernameBox.Text = (string)SettingsObj["EpicUsername"];
             }
 
-            Mods.ModManager.UpdateEngine();
+            LoadFOVSettings();
             MainWindow.PakBypass.CheckForReboot();
         }
 

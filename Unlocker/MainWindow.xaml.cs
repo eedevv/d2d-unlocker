@@ -18,14 +18,11 @@ namespace d2d
         internal static Profile profile = new Profile();
         internal static MainWindow main;
         internal static Settings settingspage = new Settings();
-        internal static Mods mods = new Mods();
         internal static Classes.ErrorLog ErrorLog = new Classes.ErrorLog();
         internal static Classes.Settings settings = new Classes.Settings();
         internal static Classes.PakBypass PakBypass = new Classes.PakBypass();
-        //internal static Classes.LobbyInfo LobbyInfo = new Classes.LobbyInfo();
         internal static Classes.SysTray SysTray = new Classes.SysTray();
         internal static Overlay currentOverlay;
-        internal static Classes.Mods.ModManager ModManager = new Classes.Mods.ModManager();
 
         internal static string DBDVersion = "8.5.2";
         internal static string CurrVersion = "3.7.5.3";
@@ -74,8 +71,8 @@ namespace d2d
                 Classes.Worker.LoadWorker();
                 Classes.Telemetry.Load();
                 Classes.Telemetry.Add();
+                Classes.Settings.LoadFOVSettings();
                 Classes.Settings.LoadConfig();
-                Classes.Settings.LoadMods();
             } catch(Exception ex) {
                 ErrorLog.CreateLog(ex.Message);
             }
@@ -88,6 +85,20 @@ namespace d2d
             Launcher.LaunchWeb("https://github.com/eedevv/d2d-unlocker/releases/latest");
         }
 
+        private void ShowPage(Page page)
+        {
+            HomeContent.Visibility = Visibility.Collapsed;
+            MainFrame.Visibility = Visibility.Visible;
+            MainFrame.Content = page;
+        }
+
+        private void ShowHome()
+        {
+            MainFrame.Content = null;
+            MainFrame.Visibility = Visibility.Collapsed;
+            HomeContent.Visibility = Visibility.Visible;
+        }
+
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -97,9 +108,7 @@ namespace d2d
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
-
             Classes.CloseManager.Close();
-
             Environment.Exit(0);
         }
         private void Minimize_Click(object sender, RoutedEventArgs e)
@@ -109,15 +118,22 @@ namespace d2d
 
         private void HomePage_Click(object sender, RoutedEventArgs e)
         {
-            if (MainFrame.Content != null)
-            {
-                MainFrame.Content = null;
-            }
+            ShowHome();
         }
 
         private void Cookie_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = cookie;
+            ShowPage(cookie);
+        }
+
+        private void Tome_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPage(tome);
+        }
+
+        private void BP_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPage(BPTools);
         }
 
         private void GoWeb(object sender, RoutedEventArgs e)
@@ -130,31 +146,19 @@ namespace d2d
             Classes.Launcher.LaunchWeb("https://discord.gg/ySsrsYdGwx");
         }
 
-        private void BP_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Content = BPTools;
-        }
-
-        private void Tome_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Content = tome;
-        }
-
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = profile;
-        }
-
-        private void Mods_Click(object sender, RoutedEventArgs e)
-        {
-            mods.CheckForMS();
-
-            MainFrame.Content = mods;
+            ShowPage(profile);
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = settingspage;
+            ShowPage(settingspage);
+        }
+
+        private void OpenLatestRelease(object sender, RoutedEventArgs e)
+        {
+            Classes.Launcher.LaunchWeb("https://github.com/eedevv/d2d-unlocker/releases/latest");
         }
 
         private async void Launch_Pressed(object sender, RoutedEventArgs e)
@@ -185,18 +189,6 @@ namespace d2d
                 UpdateText.Text = "Awaiting Fiddler Launch...";
 
                 Classes.FiddlerCore.StartFiddlerCore();
-
-                if (Classes.Mods.ModManager.HasInstalledNewMods) // Prevent Violation Error Crash
-                {
-                    UpdateText.Text = "Awaiting Pak Bypass...";
-                    await PakBypass.LoadPakBypass();
-
-                    if (CurrentType == "Steam")
-                    {
-                        UpdateText.Text = "Awaiting SSL Bypass...";
-                        await PakBypass.LoadSSLBypass();
-                    }
-                }
 
                 UpdateText.Text = "Awaiting Game Launch...";
                 Classes.Launcher.LaunchDBD(CurrentType);

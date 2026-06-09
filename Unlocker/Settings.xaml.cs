@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace d2d
 {
@@ -14,19 +15,7 @@ namespace d2d
         public Settings()
         {
             InitializeComponent();
-        }
-
-        private async void PakBypass_Start(object sender, RoutedEventArgs e)
-        {
-            System.Windows.MessageBox.Show("Outdated");
-            //if (MainWindow.CurrentType == "MS") return;
-
-            //await MainWindow.PakBypass.LoadPakBypass();
-
-            //if (MainWindow.CurrentType == "Steam")
-            //{
-            //    await MainWindow.PakBypass.LoadSSLBypass();
-            //}
+            VersionInfo.Text = $"d2d v{MainWindow.CurrVersion} | DBD v{MainWindow.DBDVersion}";
         }
 
         private void Sys_Clicked(object sender, RoutedEventArgs e)
@@ -39,8 +28,7 @@ namespace d2d
         {
             RPC = !RPC;
             RPC_Check.IsChecked = RPC;
-
-            Classes.Settings.SaveSettings(); // Update to WorkerService to notice changes
+            Classes.Settings.SaveSettings();
         }
 
         private void Switch_Platform(object sender, RoutedEventArgs e)
@@ -53,10 +41,8 @@ namespace d2d
                 MainWindow.CurrentType = "EGS";
                 TypeBox.Text = "Epic Games";
                 EpicUsernameGrid.Visibility = Visibility.Visible;
-
-                Classes.Mods.ModManager.UpdateEngine();
             }
-            else if(MainWindow.CurrentType == "EGS")
+            else if (MainWindow.CurrentType == "EGS")
             {
                 EpicUsername = EpicUsernameBox.Text;
                 MainWindow.CurrentType = "MS";
@@ -68,8 +54,6 @@ namespace d2d
                 MainWindow.CurrentType = "Steam";
                 TypeBox.Text = "Steam";
                 EpicUsernameGrid.Visibility = Visibility.Collapsed;
-
-                Classes.Mods.ModManager.UpdateEngine();
             }
         }
 
@@ -94,10 +78,8 @@ namespace d2d
 
         private void Overlay_Clicked(object sender, RoutedEventArgs e)
         {
-            OverlayEnabled = !OverlayEnabled; // Change State
-
+            OverlayEnabled = !OverlayEnabled;
             Overlay_Check.IsChecked = OverlayEnabled;
-
             if (!OverlayEnabled)
             {
                 if (MainWindow.currentOverlay != null)
@@ -112,6 +94,43 @@ namespace d2d
                 {
                     MainWindow.currentOverlay = new Overlay();
                 }
+            }
+        }
+
+        internal void FOV_Slider_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider slider = sender as Slider;
+            if (slider == null) return;
+            if (slider.Name == "FOV_KillerSlider" && FOV_KillerValue != null)
+                FOV_KillerValue.Content = ((int)slider.Value).ToString();
+            else if (slider.Name == "FOV_SurvivorSlider" && FOV_SurvivorValue != null)
+                FOV_SurvivorValue.Content = ((int)slider.Value).ToString();
+        }
+
+        private void ApplyFOV(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var mods = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    ["KillerFOV"] = ((int)FOV_KillerSlider.Value).ToString(),
+                    ["SurvivorFOV"] = ((int)FOV_SurvivorSlider.Value).ToString()
+                };
+                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string engineIni = System.IO.Path.Combine(localAppData, "d2d", "Mods", "FOV", "Engine.ini");
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(engineIni));
+                using (var writer = new System.IO.StreamWriter(engineIni))
+                {
+                    writer.WriteLine("[SystemSettings]");
+                    writer.WriteLine($"KillerFOV={mods["KillerFOV"]}");
+                    writer.WriteLine($"SurvivorFOV={mods["SurvivorFOV"]}");
+                }
+                MessageBox.Show("FOV settings saved! They will apply on next game launch.");
+            }
+            catch (Exception ex)
+            {
+                MainWindow.ErrorLog.CreateLog($"FOV apply error: {ex.Message}");
+                MessageBox.Show($"Failed to save FOV: {ex.Message}");
             }
         }
     }

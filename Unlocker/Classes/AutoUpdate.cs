@@ -26,7 +26,7 @@ namespace d2d.Classes
 
             Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                AutoUpdater.Start("https://api.github.com/repos/Fortnite-Burger/DeadByDaylight-Unlocker/releases/latest");
+                AutoUpdater.Start("https://api.github.com/repos/eedevv/d2d-unlocker/releases/latest");
             }));
         }
 

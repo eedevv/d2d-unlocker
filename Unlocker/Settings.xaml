@@ -1,12 +1,13 @@
 ﻿<Page x:Class="d2d.Settings"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="615" d:DesignWidth="850"
-      Title="Settings">
+      Title="Settings"
+      Background="{StaticResource BgDark}">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -15,70 +16,132 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <Image Source="Images/Background.png" Stretch="UniformToFill"/>
 
-        <TextBlock Text="d2d" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBlock Text="Settings" FontSize="50" Margin="0,150,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="32,32,32,32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!--<TextBlock Text="Start Pak Bypass" FontSize="35" Margin="0,275,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <Button x:Name="PakBypass" Content="Pak Bypass" 
-                Margin="0,400,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Impact"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="200"
-                Height="75"
-                Visibility="Visible"
-                Click="PakBypass_Start"/>-->
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,24">
+                <TextBlock Text="Settings" Style="{StaticResource SectionHeader}"/>
+                <TextBlock Text="Configure your unlocker experience" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+            </StackPanel>
 
-        <TextBlock Text="Show Overlay" FontSize="20" Margin="0,0,400,100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <CheckBox Click="Overlay_Clicked" x:Name="Overlay_Check" IsChecked="True" Margin="0,0,400,25" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <CheckBox.LayoutTransform>
-                <ScaleTransform ScaleX="2" ScaleY="2" />
-            </CheckBox.LayoutTransform>
-        </CheckBox>
+            <!-- General Settings Card -->
+            <Border Grid.Row="1" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="General" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
 
-        <TextBlock Text="Discord RPC" FontSize="20" Margin="0,100,400,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <CheckBox Click="RPC_Clicked" x:Name="RPC_Check" IsChecked="True" Margin="0,200,400,25" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <CheckBox.LayoutTransform>
-                <ScaleTransform ScaleX="2" ScaleY="2" />
-            </CheckBox.LayoutTransform>
-        </CheckBox>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Show Overlay" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" Click="Overlay_Clicked" x:Name="Overlay_Check" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
 
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Discord RPC" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" Click="RPC_Clicked" x:Name="RPC_Check" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
 
-        <TextBlock Text="Hide on Launch" FontSize="20" Margin="400,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <CheckBox Click="Sys_Clicked" x:Name="Sys_Check" IsChecked="True" Margin="400,0,0,25" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <CheckBox.LayoutTransform>
-                <ScaleTransform ScaleX="2" ScaleY="2" />
-            </CheckBox.LayoutTransform>
-        </CheckBox>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Hide to System Tray" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" Click="Sys_Clicked" x:Name="Sys_Check" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
-        <TextBlock Text="Platform" FontSize="20" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBox x:Name="TypeBox" IsReadOnly="True" Text="Steam" TextWrapping="Wrap" FontSize="17"  FontFamily="Tw Cen MT Condensed Extra Bold" Foreground="White" Background="#151318" BorderBrush="Black" BorderThickness="0.5" Margin="0,0,0,25" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Button x:Name="Switch" Content="Switch" 
-                Margin="0,75,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Impact"
-                FontSize="15" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="100"
-                Height="30"
-                Visibility="Visible"
-                Click="Switch_Platform"/>
+            <!-- Platform & Name Spoofing Card -->
+            <Border Grid.Row="2" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Platform &amp; Identity" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
 
-        <Grid x:Name="EpicUsernameGrid" Visibility="Collapsed">
-            <TextBlock Text="Epic Username" FontSize="20" Margin="0,0,0,250" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-            <TextBox x:Name="EpicUsernameBox" Text="" TextWrapping="Wrap" FontSize="17" FontFamily="Tw Cen MT Condensed Extra Bold" Foreground="White" Background="#151318" BorderBrush="Black" BorderThickness="0.5" Margin="0,0,0,175" Width="200" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBlock Text="Leave empty to use default Epic display name" FontSize="12" Margin="0,0,0,140" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Platform" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TypeBox" IsReadOnly="True" Text="Steam" Style="{StaticResource DarkTextBox}" Width="120" HorizontalAlignment="Left" Grid.Column="1"/>
+                        <Button Grid.Column="2" x:Name="Switch" Content="Switch" Style="{StaticResource SecondaryButton}" Height="30" Width="80" Margin="8,0,0,0" Click="Switch_Platform"/>
+                    </Grid>
+
+                    <Grid x:Name="EpicUsernameGrid" Visibility="Collapsed" Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Custom Epic Display Name" FontSize="14" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
+                        <TextBox Grid.Row="1" x:Name="EpicUsernameBox" Text="" Style="{StaticResource DarkTextBox}" Width="260" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="2" Text="Leave empty to use default Epic display name" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- FOV Settings Card -->
+            <Border Grid.Row="3" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Field of View" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="Adjust your in-game FOV (requires Engine.ini editing)" Style="{StaticResource SubText}" Margin="0,0,0,16"/>
+
+                    <Grid Margin="0,0,0,16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Killer FOV" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,4"/>
+                        <Slider x:Name="FOV_KillerSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource DarkSlider}" Value="87" ValueChanged="FOV_Slider_Changed"/>
+                        <Label x:Name="FOV_KillerValue" Grid.Row="1" Grid.Column="1" Content="87" Foreground="{StaticResource Accent}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Survivor FOV" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,4"/>
+                        <Slider x:Name="FOV_SurvivorSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource DarkSlider}" Value="90" ValueChanged="FOV_Slider_Changed"/>
+                        <Label x:Name="FOV_SurvivorValue" Grid.Row="1" Grid.Column="1" Content="90" Foreground="{StaticResource Accent}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Button Content="Apply FOV" Style="{StaticResource ActionButton}" Width="160" Height="36" Margin="0,16,0,0" Click="ApplyFOV" FontSize="13"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Version Info -->
+            <Border Grid.Row="4" Background="#2A3344" CornerRadius="8" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="About" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="VersionInfo" Text="" FontSize="13" Foreground="{StaticResource TextMuted}"/>
+                </StackPanel>
+            </Border>
         </Grid>
-
-    </Grid>
+    </ScrollViewer>
 </Page>

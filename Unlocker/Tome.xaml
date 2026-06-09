@@ -1,13 +1,13 @@
 ﻿<Page x:Class="d2d.Tome"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:d2d"
+      xmlns:mc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d"
       d:DesignHeight="615" d:DesignWidth="850"
-      Title="Tome">
+      Title="Tome"
+      Background="{StaticResource BgDark}">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -16,44 +16,27 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <Image Source="Images/Background.png" Stretch="UniformToFill"/>
 
-        <TextBlock Text="d2d" FontSize="75" Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
-        <TextBlock Text="Tome Unlocker" FontSize="50" Margin="0,150,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"/>
+    <Grid Margin="32,32,32,32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Button x:Name="Start" Content="Start Unlocker" 
-                Margin="0,100,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Impact"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="215"
-                Height="75"
-                Click="Tome_Start"
-                Visibility="Visible"
-                ToolTip="Begin Unlocking Tomes"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,32">
+            <TextBlock Text="Tome Unlocker" Style="{StaticResource SectionHeader}"/>
+            <TextBlock Text="Automatically complete tome challenges" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+        </StackPanel>
 
-        <Button x:Name="Stop" Content="Stop Unlocker" 
-                Margin="0,100,0,0"
-                Background="#292d33"
-                Foreground="White"
-                FontFamily="Impact"
-                FontSize="30" 
-                Style="{DynamicResource RoundendButtonStyle1}" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="215"
-                Height="75"
-                Click="Tome_Stop"
-                Visibility="Hidden"
-                ToolTip="Stop Unlocking Tomes"/>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="0,0,0,16"/>
+            <Button x:Name="Start" Content="Start Unlocker" Style="{StaticResource ActionButton}" Width="220" Height="56" FontSize="16" Click="Tome_Start" Margin="0,0,0,12"/>
+            <Button x:Name="Stop" Content="Stop Unlocker" Style="{StaticResource SecondaryButton}" Width="220" Height="44" Click="Tome_Stop" Visibility="Hidden"/>
+        </StackPanel>
 
-        <TextBox x:Name="TomeBox" IsReadOnly="True" TextAlignment="Center" TextWrapping="Wrap" Foreground="White" Background="#151318" BorderBrush="Black" BorderThickness="0.5" Margin="0,400,0,0" Width="350" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-        <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="White" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Border Grid.Row="2" Background="#2A3344" CornerRadius="8" Padding="16" MinHeight="80">
+            <TextBox x:Name="TomeBox" IsReadOnly="True" TextAlignment="Center" TextWrapping="Wrap" Background="Transparent" Foreground="{StaticResource TextBrush}" BorderThickness="0" FontFamily="Consolas" FontSize="12"/>
+        </Border>
     </Grid>
 </Page>
