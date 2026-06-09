@@ -90,36 +90,36 @@
 
                 <!-- Content Area -->
                 <Border Background="{StaticResource BgNav}" Margin="75,32,0,0" BorderThickness="1,0,0,0" BorderBrush="#2A3344">
-                    <!-- Home Content -->
-                    <Grid x:Name="HomeContent">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid x:Name="HomeContent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Margin="0,60,0,0" HorizontalAlignment="Center">
-                            <TextBlock Text="d2d" FontSize="64" FontWeight="Bold" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
-                            <TextBlock Text="Dead by Daylight Unlocker" FontSize="20" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                            <TextBlock x:Name="VersionText" Text="d2d: v2.0" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,4,0,0" Opacity="0.5"/>
-                            <TextBlock x:Name="DbdVersionText" Text="DBD: v7.2.3" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Opacity="0.5"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="0" Margin="0,60,0,0" HorizontalAlignment="Center">
+                                <TextBlock Text="d2d" FontSize="64" FontWeight="Bold" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
+                                <TextBlock Text="Dead by Daylight Unlocker" FontSize="20" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                <TextBlock x:Name="VersionText" Text="d2d: v2.0" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,4,0,0" Opacity="0.5"/>
+                                <TextBlock x:Name="DbdVersionText" Text="DBD: v7.2.3" FontSize="11" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Opacity="0.5"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="0,0,0,16"/>
-                            <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="#4CAF50" Icon="Check" Height="48" Width="48" Margin="0,0,0,16"/>
-                            <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Times" Height="48" Width="48" Margin="0,0,0,16"/>
-                            <TextBlock x:Name="UpdateText" Text="" FontSize="16" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
-                            <Button x:Name="Launch" Content="LAUNCH" Style="{StaticResource ActionButton}" Width="220" Height="56" FontSize="18" Click="Launch_Pressed"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:ImageAwesome x:Name="Spinner" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Refresh" Spin="True" Height="48" Width="48" Margin="0,0,0,16"/>
+                                <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="#4CAF50" Icon="Check" Height="48" Width="48" Margin="0,0,0,16"/>
+                                <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Times" Height="48" Width="48" Margin="0,0,0,16"/>
+                                <TextBlock x:Name="UpdateText" Text="" FontSize="16" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                                <Button x:Name="Launch" Content="LAUNCH" Style="{StaticResource ActionButton}" Width="220" Height="56" FontSize="18" Click="Launch_Pressed"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="2" Margin="0,0,0,24" HorizontalAlignment="Center">
-                            <Button Content="&#x1F517; Latest Release" Style="{StaticResource SecondaryButton}" Height="32" FontSize="11" Click="OpenLatestRelease" HorizontalAlignment="Center" Padding="16,0"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="2" Margin="0,0,0,24" HorizontalAlignment="Center">
+                                <Button Content="&#x1F517; Latest Release" Style="{StaticResource SecondaryButton}" Height="32" FontSize="11" Click="OpenLatestRelease" HorizontalAlignment="Center" Padding="16,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed"/>
                     </Grid>
-
-                    <!-- Frame for page navigation -->
-                    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed"/>
                 </Border>
             </Grid>
         </Border>
