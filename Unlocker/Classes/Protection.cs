@@ -40,6 +40,7 @@ namespace d2d.Classes
                 {
                     foreach (string flag in Directory.GetFiles(flagDir))
                     {
+                        if (Path.GetFileName(flag) == "renamed.flag") continue;
                         try { File.Delete(flag); } catch { }
                     }
                 }
