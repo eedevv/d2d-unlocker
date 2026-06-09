@@ -60,6 +60,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autoupdater.NET.Official" Version="1.8.4" />
+    <PackageReference Include="FiddlerCore5" Version="5.0.2" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -69,15 +70,6 @@
   <ItemGroup>
     <Reference Include="Steamworks.NET">
       <HintPath>Assemblies\Steamworks.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="FiddlerCore5">
-      <HintPath>Assemblies\FiddlerCore5.dll</HintPath>
-    </Reference>
-    <Reference Include="FiddlerCore">
-      <HintPath>Assemblies\FiddlerCore.dll</HintPath>
-    </Reference>
-    <Reference Include="BCMakeCert">
-      <HintPath>Assemblies\BCMakeCert.dll</HintPath>
     </Reference>
   </ItemGroup>
 
