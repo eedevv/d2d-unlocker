@@ -28,5 +28,13 @@
         <TextBlock x:Name="Time_Header_Text" Margin="0,0,103,12" Opacity="0.6" Text="Clock:"  Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
         <TextBlock x:Name="VER_Text" Margin="0,0,15,30" Text="v2.5" Opacity="0.6" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
         <TextBlock x:Name="Time_Text" Margin="0,0,15,12" Text="15:49:52" Opacity="0.6" Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+
+        <Grid x:Name="MatchInfo" Visibility="Hidden">
+            <Rectangle x:Name="BoundingBox_Stroke_M" Stroke="#121213" StrokeThickness="1.0" RadiusX="3" RadiusY="3" Visibility="Visible" Width="200" Height="85" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+            <Rectangle x:Name="BoundingBox_Info_M" Opacity="0.4" RadiusX="3" RadiusY="3" Visibility="Visible" Fill="#121213" Width="200" Height="85" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+            <TextBlock x:Name="MatchId_Text" Margin="0,0,15,60" Opacity="0.6" Text="Match: ..." Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+            <TextBlock x:Name="Region_Text" Margin="0,0,15,42" Opacity="0.6" Text="Region: ..." Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+            <TextBlock x:Name="Username_Text" Margin="0,0,15,24" Opacity="0.6" Text="User: ..." Foreground="White" FontFamily="Tw Cen MT Condensed Extra Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+        </Grid>
     </Grid>
 </Window>

@@ -1,5 +1,7 @@
 ﻿using Steamworks;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,9 +24,26 @@ namespace d2d
         internal bool Break_Skins = false;
         internal bool Disabled = false;
 
+        /* Per-Character Prestige */
+        internal Dictionary<string, int> PerCharacterPrestige = new Dictionary<string, int>();
+        private static readonly string PrestigeFilePath = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "d2d", "Configs", "PerCharacterPrestige.json");
+
+        private static readonly Dictionary<string, string> PrestigeTextBoxMap = new Dictionary<string, string>
+        {
+            {"Trapper", "Prestige_Trapper"}, {"Wraith", "Prestige_Wraith"},
+            {"Hillbilly", "Prestige_Hillbilly"}, {"Nurse", "Prestige_Nurse"},
+            {"Huntress", "Prestige_Huntress"},
+            {"Dwight", "Prestige_Dwight"}, {"Meg", "Prestige_Meg"},
+            {"Claudette", "Prestige_Claudette"}, {"Jake", "Prestige_Jake"},
+            {"Bill", "Prestige_Bill"}
+        };
+
         public Profile()
         {
             InitializeComponent();
+            LoadPerCharacterPrestige();
         }
 
         internal void SetProfileType(int profile)
@@ -184,6 +203,54 @@ namespace d2d
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        internal void LoadPerCharacterPrestige()
+        {
+            if (!File.Exists(PrestigeFilePath)) return;
+            try
+            {
+                string json = File.ReadAllText(PrestigeFilePath);
+                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+                if (data == null) return;
+                PerCharacterPrestige = data;
+                foreach (var kvp in PerCharacterPrestige)
+                {
+                    if (PrestigeTextBoxMap.ContainsKey(kvp.Key))
+                    {
+                        var textBox = FindName(PrestigeTextBoxMap[kvp.Key]) as TextBox;
+                        if (textBox != null)
+                            textBox.Text = kvp.Value.ToString();
+                    }
+                }
+            }
+            catch { }
+        }
+
+        internal void SavePerCharacterPrestige()
+        {
+            try
+            {
+                string dir = Path.GetDirectoryName(PrestigeFilePath);
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(PerCharacterPrestige, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(PrestigeFilePath, json);
+            }
+            catch { }
+        }
+
+        private void ApplyPerCharacterPrestige(object sender, RoutedEventArgs e)
+        {
+            foreach (var kvp in PrestigeTextBoxMap)
+            {
+                var textBox = FindName(kvp.Value) as TextBox;
+                if (textBox != null && int.TryParse(textBox.Text, out int val))
+                {
+                    PerCharacterPrestige[kvp.Key] = Math.Max(0, Math.Min(100, val));
+                }
+            }
+            SavePerCharacterPrestige();
+            MessageBox.Show("Per-character prestige values saved!");
         }
     }
 }

@@ -41,21 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images/Background.png" />
-    <Resource Include="Images/bp.png" />
-    <Resource Include="Images/close.png" />
-    <Resource Include="Images/close_small.png" />
     <Resource Include="Images/cookie.png" />
     <Resource Include="Images/discord.png" />
     <Resource Include="Images/home.png" />
-    <Resource Include="Images/minimize.png" />
-    <Resource Include="Images/Sidebar.png" />
-    <Resource Include="Images/tome.png" />
-    <Resource Include="Images/Topbar.png" />
-    <Resource Include="Images/web.png" />
-    <Resource Include="Images/sweater.png" />
     <Resource Include="Images/settings.png" />
-    <Resource Include="Images/mods.png" />
+    <Resource Include="Images/web.png" />
   </ItemGroup>
 
   <ItemGroup>

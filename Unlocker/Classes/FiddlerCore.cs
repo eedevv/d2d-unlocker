@@ -18,6 +18,17 @@ namespace d2d.Classes
 
         private static void EnsureRootCertGrabber()
         {
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly);
+            bool certExists = store.Certificates.Find(X509FindType.FindBySubjectName, "d2d", false).Count > 0;
+            store.Close();
+
+            if (certExists)
+            {
+                CONFIG.IgnoreServerCertErrors = true;
+                return;
+            }
+
             CertMaker.createRootCert();
             string str = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "d2d");
             if (!Directory.Exists(str))
@@ -30,6 +41,7 @@ namespace d2d.Classes
             x509Store.Open(OpenFlags.ReadWrite);
             x509Store.Add(rootCertificate);
             x509Store.Close();
+            CONFIG.IgnoreServerCertErrors = true;
         }
 
         public static void StartFiddlerCore()
@@ -62,6 +74,8 @@ namespace d2d.Classes
         {
             FiddlerApplication.BeforeRequest -= LaunchedWithProfileEditor;
             FiddlerApplication.BeforeRequest += LaunchedWithProfileEditor;
+            FiddlerApplication.BeforeRequest -= FiddlerApplication_BeforeRequest;
+            FiddlerApplication.BeforeRequest += FiddlerApplication_BeforeRequest;
             FiddlerApplication.BeforeResponse += FiddlerApplication_BeforeRespone;
         }
 
@@ -71,6 +85,7 @@ namespace d2d.Classes
 
             FiddlerApplication.BeforeRequest -= LaunchedWithProfileEditor;
             FiddlerApplication.BeforeRequest -= GrabWithoutShutdown;
+            FiddlerApplication.BeforeRequest -= FiddlerApplication_BeforeRequest;
             FiddlerApplication.BeforeResponse -= FiddlerApplication_BeforeRespone;
 
             FiddlerApplication.Shutdown();
@@ -119,6 +134,41 @@ namespace d2d.Classes
             //oSession.oFlags["x-replywithfile"] = Settings.ProfilePath + "/Disabled.json";
         }
 
+        private static void FiddlerApplication_BeforeRequest(Session oSession)
+        {
+            string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
+            if (string.IsNullOrEmpty(epicUsername)) return;
+
+            if (oSession.HTTPMethodIs("POST") || oSession.HTTPMethodIs("PUT") || oSession.HTTPMethodIs("PATCH"))
+            {
+                oSession.utilDecodeRequest();
+                string body = oSession.GetRequestBodyAsString();
+                if (!string.IsNullOrEmpty(body) && body.Contains("displayName"))
+                {
+                    try
+                    {
+                        JObject json = JsonConvert.DeserializeObject<JObject>(body);
+                        bool modified = false;
+                        if (json.ContainsKey("displayName"))
+                        {
+                            json["displayName"] = epicUsername;
+                            modified = true;
+                        }
+                        if (json.ContainsKey("playerName"))
+                        {
+                            json["playerName"] = epicUsername;
+                            modified = true;
+                        }
+                        if (modified)
+                        {
+                            oSession.utilSetRequestBody(JsonConvert.SerializeObject(json));
+                        }
+                    }
+                    catch { }
+                }
+            }
+        }
+
         private static void FiddlerApplication_BeforeRespone(Session oSession)
         {
             if (oSession.uriContains("api/v1/auth/provider/"))
@@ -137,11 +187,26 @@ namespace d2d.Classes
                 string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
                 if (!string.IsNullOrEmpty(epicUsername))
                 {
+                    bool modified = false;
                     if (JSON.ContainsKey("displayName"))
                     {
                         JSON["displayName"] = epicUsername;
+                        modified = true;
+                    }
+                    if (JSON.ContainsKey("playerName"))
+                    {
+                        JSON["playerName"] = epicUsername;
+                        modified = true;
+                    }
+                    if (JSON.ContainsKey("username"))
+                    {
+                        JSON["username"] = epicUsername;
+                        modified = true;
+                    }
+                    if (modified)
+                    {
                         oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
-                        MainWindow.ErrorLog.CreateLog($"Spoofed displayName to {epicUsername} at auth/provider");
+                        MainWindow.ErrorLog.CreateLog($"Spoofed name to {epicUsername} at auth/provider");
                     }
                 }
             }
@@ -171,10 +236,41 @@ namespace d2d.Classes
                             JSON["playerName"] = epicUsername;
                             modified = true;
                         }
+                        if (JSON.ContainsKey("username"))
+                        {
+                            JSON["username"] = epicUsername;
+                            modified = true;
+                        }
                         if (modified)
                         {
                             oSession.utilSetResponseBody(JsonConvert.SerializeObject(JSON));
                             MainWindow.ErrorLog.CreateLog($"Spoofed name to {epicUsername}");
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            if (oSession.uriContains("/api/v1/match/") || oSession.uriContains("/api/v1/matches/"))
+            {
+                oSession.utilDecodeResponse();
+                string respBody = oSession.GetResponseBodyAsString();
+                if (!string.IsNullOrEmpty(respBody))
+                {
+                    try
+                    {
+                        JObject json = JsonConvert.DeserializeObject<JObject>(respBody);
+                        string matchId = json["matchId"]?.ToString() ?? json["id"]?.ToString() ?? "";
+                        string region = json["region"]?.ToString() ?? "";
+                        string username = MainWindow.settingspage?.EpicUsername ?? "";
+
+                        if (!string.IsNullOrEmpty(matchId))
+                        {
+                            MainWindow.ErrorLog.CreateLog($"Match found: {matchId}");
+                            if (MainWindow.currentOverlay != null)
+                            {
+                                Overlay.UpdateMatchInfo(matchId, region, username);
+                            }
                         }
                     }
                     catch { }

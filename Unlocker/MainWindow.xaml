@@ -42,18 +42,6 @@
                                 <TextBlock Text="Cookie" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource SidebarButton}" Click="Tome_Click">
-                            <StackPanel>
-                                <fa:ImageAwesome Icon="Book" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
-                                <TextBlock Text="Tome" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButton}" Click="BP_Click">
-                            <StackPanel>
-                                <fa:ImageAwesome Icon="Star" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>
-                                <TextBlock Text="BP" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
-                            </StackPanel>
-                        </Button>
                         <Button Style="{StaticResource SidebarButton}" Click="Profile_Click">
                             <StackPanel>
                                 <fa:ImageAwesome Icon="Suitcase" Foreground="{StaticResource TextMuted}" Height="22" Width="22"/>

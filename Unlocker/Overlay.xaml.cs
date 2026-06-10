@@ -9,6 +9,10 @@ namespace d2d
 {
     public partial class Overlay : Window
     {
+        public static string matchId = "";
+        public static string matchRegion = "";
+        public static string accountUsername = "";
+
         private IntPtr OverlayWindowHandle = default;
         private IntPtr Window = default;
         private Classes.User32.Rect rect = default;
@@ -110,27 +114,23 @@ namespace d2d
             timer.Dispose();
         }
 
-        /*// Match Found
-        private void ProcessMatchedInfo(object sender, (string Rank, string Country, string Rating, string Server, string Killer) E)
+        public static void UpdateMatchInfo(string newMatchId, string newRegion, string newUsername)
         {
-            Rank_Text.Text = "Killer Rank: " + E.Rank;
-            Country_Text.Text = "Killer Country: " + E.Country;
-            Rating_Text.Text = "Killer Rating: " + E.Rating;
-            Killer_Text.Text = "Killer Name: " + E.Killer;
+            matchId = newMatchId;
+            matchRegion = newRegion;
+            accountUsername = newUsername;
 
-            InMatch.Visibility = Visibility.Visible;
+            if (MainWindow.currentOverlay != null)
+            {
+                MainWindow.currentOverlay.Dispatcher.Invoke((Action)(() =>
+                {
+                    MainWindow.currentOverlay.MatchId_Text.Text = "Match: " + matchId;
+                    MainWindow.currentOverlay.Region_Text.Text = "Region: " + newRegion;
+                    MainWindow.currentOverlay.Username_Text.Text = "User: " + newUsername;
+                    MainWindow.currentOverlay.MatchInfo.Visibility = Visibility.Visible;
+                }));
+            }
         }
-
-        // Match Found
-        private void ProcessMatchInfo(object sender, (string MatchId, string Platform, string SteamId) E)
-        {
-            MatchId_Text.Text = "Match ID: " + E.MatchId;
-            Platform_Text.Text = "Platform: " + E.Platform;
-            SteamId_Text.Text = "Killer Steam ID: " + E.SteamId;
-
-            InMatch.Visibility = Visibility.Visible;
-        }*/
-
 
     }
 }

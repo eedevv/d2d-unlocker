@@ -48,19 +48,38 @@ namespace d2d
             Grab_Button.Visibility = Visibility.Hidden;
             Spinner.Visibility = Visibility.Visible;
 
-            if (MainWindow.CurrentType == "Steam")
+            switch (MainWindow.CurrentType)
             {
-                Classes.SteamWorks.GetBhvrSession();
+                case "Steam":
+                    Classes.SteamWorks.GetBhvrSession();
+                    break;
+                case "EGS":
+                    EpicGamesAuth();
+                    break;
+                case "MS":
+                    MSStoreAuth();
+                    break;
             }
-            else
+        }
+
+        private void EpicGamesAuth()
+        {
+            if (!Classes.FiddlerCore.FiddlerIsRunning)
             {
-                if (!Classes.FiddlerCore.FiddlerIsRunning)
-                {
-                    Classes.FiddlerCore.StartFiddlerCore();
-                }
-                Classes.FiddlerCore.StartWithShutdown();
-                Classes.Launcher.LaunchDBD(MainWindow.CurrentType);
+                Classes.FiddlerCore.StartFiddlerCore();
             }
+            Classes.FiddlerCore.StartWithShutdown();
+            Classes.Launcher.LaunchDBD("EGS");
+        }
+
+        private void MSStoreAuth()
+        {
+            if (!Classes.FiddlerCore.FiddlerIsRunning)
+            {
+                Classes.FiddlerCore.StartFiddlerCore();
+            }
+            Classes.FiddlerCore.StartWithShutdown();
+            Classes.Launcher.LaunchDBD("MS");
         }
 
         public async void ReturnFromCookie(string value, bool showcookie)

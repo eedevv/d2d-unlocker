@@ -40,21 +40,19 @@ namespace d2d
             {
                 MainWindow.CurrentType = "EGS";
                 TypeBox.Text = "Epic Games";
-                EpicUsernameGrid.Visibility = Visibility.Visible;
             }
             else if (MainWindow.CurrentType == "EGS")
             {
                 EpicUsername = EpicUsernameBox.Text;
                 MainWindow.CurrentType = "MS";
                 TypeBox.Text = "MS";
-                EpicUsernameGrid.Visibility = Visibility.Collapsed;
             }
             else if (MainWindow.CurrentType == "MS")
             {
                 MainWindow.CurrentType = "Steam";
                 TypeBox.Text = "Steam";
-                EpicUsernameGrid.Visibility = Visibility.Collapsed;
             }
+            EpicUsernameGrid.Visibility = Visibility.Visible;
         }
 
         internal void UpdateTypeBox(string type)
@@ -63,17 +61,15 @@ namespace d2d
             {
                 case "Steam":
                     TypeBox.Text = "Steam";
-                    EpicUsernameGrid.Visibility = Visibility.Collapsed;
                     break;
                 case "EGS":
                     TypeBox.Text = "Epic Games";
-                    EpicUsernameGrid.Visibility = Visibility.Visible;
                     break;
                 case "MS":
                     TypeBox.Text = "MS";
-                    EpicUsernameGrid.Visibility = Visibility.Collapsed;
                     break;
             }
+            EpicUsernameGrid.Visibility = Visibility.Visible;
         }
 
         private void Overlay_Clicked(object sender, RoutedEventArgs e)

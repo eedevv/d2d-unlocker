@@ -13,9 +13,6 @@ namespace d2d
         internal static Classes.AutoUpdate AutoUpdater = new Classes.AutoUpdate();
         internal static UpdateScreen UpdateScreen = new UpdateScreen();
         internal static Cookie cookie = new Cookie();
-        internal static Tome tome = new Tome();
-        internal static BP bp = new BP();
-        internal static BPTools BPTools = new BPTools();
         internal static Profile profile = new Profile();
         internal static MainWindow main;
         internal static Settings settingspage = new Settings();
@@ -125,16 +122,6 @@ namespace d2d
         private void Cookie_Click(object sender, RoutedEventArgs e)
         {
             ShowPage(cookie);
-        }
-
-        private void Tome_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPage(tome);
-        }
-
-        private void BP_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPage(BPTools);
         }
 
         private void GoWeb(object sender, RoutedEventArgs e)
