@@ -13,8 +13,6 @@ namespace d2d
 
         internal async void CheckForUpdate()
         {
-            MainWindow.main.TotalFrame.Content = this;
-
             UpdateText.Text = "Checking for updates...";
             Spinner.Visibility = Visibility.Visible;
             await Task.Delay(1000);
@@ -27,10 +25,6 @@ namespace d2d
             Spinner.Visibility = Visibility.Hidden;
             Check.Visibility = Visibility.Visible;
             await Task.Delay(1000);
-            this.Dispatcher.Invoke((Action)(() =>
-            {
-                MainWindow.main.TotalFrame.Content = null;
-            }));
             MainWindow.main.UpdateCheckDone();
         }
 
@@ -40,10 +34,6 @@ namespace d2d
             Spinner.Visibility = Visibility.Hidden;
             Error.Visibility = Visibility.Visible;
             await Task.Delay(1000);
-            this.Dispatcher.Invoke((Action)(() =>
-            {
-                MainWindow.main.TotalFrame.Content = null;
-            }));
             MainWindow.main.UpdateCheckDone();
         }
 
