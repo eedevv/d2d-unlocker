@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using d2d.Classes;
 
