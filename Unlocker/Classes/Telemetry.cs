@@ -28,9 +28,9 @@ namespace d2d.Classes
                         new KeyValuePair<string, string>("guid", GUID.GetGUID()),
                     })
                 );
-            } catch
+            }
+            catch
             {
-
             }
         }
     }

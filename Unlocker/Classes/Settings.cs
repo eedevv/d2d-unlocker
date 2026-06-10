@@ -45,16 +45,20 @@ namespace d2d.Classes
 
         internal async Task DownloadSettings()
         {
-            await DownloadBytes(BaseDir + "GetAll.json", LocalAppData + "/d2d/Configs/Profiles/Profile.json");
-            await DownloadBytes(BaseDir + "Bloodweb.json", LocalAppData + "/d2d/Configs/Profiles/Bloodweb.json");
-            await DownloadBytes(BaseDir + "Market.json", LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json");
-            await DownloadBytes(BaseDir + "MarketDlcOnly.json", LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json");
-            await DownloadBytes(BaseDir + "MarketWithPerks.json", LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json");
-            await DownloadBytes(BaseDir + "MarketNoSavefile.json", LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json");
-            await DownloadBytes(BaseDir + "Currency.json", LocalAppData + "/d2d/Configs/Profiles/Currency.json");
-            await DownloadBytes(BaseDir + "Level.json", LocalAppData + "/d2d/Configs/Profiles/Level.json");
+            try
+            {
+                await DownloadBytes(BaseDir + "GetAll.json", LocalAppData + "/d2d/Configs/Profiles/Profile.json");
+                await DownloadBytes(BaseDir + "Bloodweb.json", LocalAppData + "/d2d/Configs/Profiles/Bloodweb.json");
+                await DownloadBytes(BaseDir + "Market.json", LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json");
+                await DownloadBytes(BaseDir + "MarketDlcOnly.json", LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json");
+                await DownloadBytes(BaseDir + "MarketWithPerks.json", LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json");
+                await DownloadBytes(BaseDir + "MarketNoSavefile.json", LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json");
+                await DownloadBytes(BaseDir + "Currency.json", LocalAppData + "/d2d/Configs/Profiles/Currency.json");
+                await DownloadBytes(BaseDir + "Level.json", LocalAppData + "/d2d/Configs/Profiles/Level.json");
 
-            UpdateInventory();
+                UpdateInventory();
+            }
+            catch { }
         }
 
         List<string> InventoryFiles = new List<string>()

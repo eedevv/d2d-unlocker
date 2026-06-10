@@ -65,6 +65,7 @@ namespace d2d.Classes
                 {
                     foreach (string flag in Directory.GetFiles(flagDir))
                     {
+                        if (Path.GetFileName(flag) == "renamed.flag") continue;
                         try
                         {
                             File.Delete(flag);
@@ -72,9 +73,6 @@ namespace d2d.Classes
                         catch { }
                     }
                 }
-
-                string renameFlag = Path.Combine(flagDir, "renamed.flag");
-                try { if (File.Exists(renameFlag)) File.Delete(renameFlag); } catch { }
             }
             catch { }
         }

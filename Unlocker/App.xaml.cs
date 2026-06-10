@@ -113,6 +113,7 @@ namespace d2d
         private void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs dispatcherUnhandledExceptionEventArgs)
         {
             Classes.CloseManager.Close(true, dispatcherUnhandledExceptionEventArgs.Exception.Message);
+            dispatcherUnhandledExceptionEventArgs.Handled = true;
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)

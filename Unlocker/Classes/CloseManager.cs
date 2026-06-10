@@ -22,12 +22,6 @@ namespace d2d.Classes
             {
                 Overlay.StopTimer();
             }
-
-            string flagDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/d2d/Flags";
-            string renameFlag = Path.Combine(flagDir, "renamed.flag");
-
-            if (File.Exists(renameFlag))
-                File.Delete(renameFlag);
         }
     }
 }
