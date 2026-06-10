@@ -4,22 +4,28 @@
 
     <!-- Colors -->
     <Color x:Key="ColorBgDark">#1B1F26</Color>
-    <Color x:Key="ColorBgNav">#16191F</Color>
-    <Color x:Key="ColorBgPanel">#334157</Color>
+    <Color x:Key="ColorBgNav">#14171D</Color>
+    <Color x:Key="ColorBgPanel">#2A3344</Color>
     <Color x:Key="ColorAccent">#DC143C</Color>
-    <Color x:Key="ColorAccentHover">#FF1A4A</Color>
+    <Color x:Key="ColorAccentHover">#E81A4A</Color>
+    <Color x:Key="ColorAccentActive">#B00D2E</Color>
     <Color x:Key="ColorText">#FFFFFF</Color>
     <Color x:Key="ColorTextMuted">#8899AA</Color>
     <Color x:Key="ColorBorder">#3A4A5E</Color>
+    <Color x:Key="ColorHover">#2A3344</Color>
+    <Color x:Key="ColorActive">#1E2733</Color>
 
     <SolidColorBrush x:Key="BgDark" Color="{StaticResource ColorBgDark}"/>
     <SolidColorBrush x:Key="BgNav" Color="{StaticResource ColorBgNav}"/>
     <SolidColorBrush x:Key="BgPanel" Color="{StaticResource ColorBgPanel}"/>
     <SolidColorBrush x:Key="Accent" Color="{StaticResource ColorAccent}"/>
     <SolidColorBrush x:Key="AccentHover" Color="{StaticResource ColorAccentHover}"/>
+    <SolidColorBrush x:Key="AccentActive" Color="{StaticResource ColorAccentActive}"/>
     <SolidColorBrush x:Key="TextBrush" Color="{StaticResource ColorText}"/>
     <SolidColorBrush x:Key="TextMuted" Color="{StaticResource ColorTextMuted}"/>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource ColorBorder}"/>
+    <SolidColorBrush x:Key="HoverBg" Color="{StaticResource ColorHover}"/>
+    <SolidColorBrush x:Key="ActiveBg" Color="{StaticResource ColorActive}"/>
 
     <!-- Base Button Style -->
     <Style x:Key="SidebarButton" TargetType="Button">
@@ -35,16 +41,20 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="3,0,0,0" BorderBrush="Transparent" SnapsToDevicePixels="true">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,0"/>
+                        <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,0"/>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="Active">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource ActiveBg}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Accent}"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#2A3344"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource HoverBg}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentHover}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#3A4A5E"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource BgPanel}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentActive}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -72,7 +82,7 @@
                             <Setter Property="Background" TargetName="border" Value="{StaticResource AccentHover}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="#FF0D2E"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource AccentActive}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -82,7 +92,7 @@
 
     <!-- Secondary Button -->
     <Style x:Key="SecondaryButton" TargetType="Button">
-        <Setter Property="Background" Value="#2A3344"/>
+        <Setter Property="Background" Value="{StaticResource BgPanel}"/>
         <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="13"/>
@@ -97,11 +107,12 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="#3A4A5E"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Accent}"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource HoverBg}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentHover}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="#4A5A6E"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource BgDark}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentActive}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -223,6 +234,17 @@
         <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- Card Border Style -->
+    <Style x:Key="CardBorder" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BgPanel}"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="24"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
 </ResourceDictionary>

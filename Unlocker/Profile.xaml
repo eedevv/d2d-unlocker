@@ -70,56 +70,42 @@
                     <TextBlock Text="Per-Character Prestige" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
 
                     <TextBlock Text="Killers" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
-                    <Grid Margin="0,0,0,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="80"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Trapper" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Trapper" Grid.Row="0" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="1" Text="Wraith" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Wraith" Grid.Row="1" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="2" Text="Hillbilly" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Hillbilly" Grid.Row="2" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="3" Text="Nurse" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Nurse" Grid.Row="3" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="4" Text="Huntress" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                        <TextBox x:Name="Prestige_Huntress" Grid.Row="4" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
-                    </Grid>
+                    <ItemsControl x:Name="KillerPrestigeList" Margin="0,0,0,12">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
                     <TextBlock Text="Survivors" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
-                    <Grid Margin="0,0,0,16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="80"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Dwight" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Dwight" Grid.Row="0" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="1" Text="Meg" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Meg" Grid.Row="1" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="2" Text="Claudette" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Claudette" Grid.Row="2" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="3" Text="Jake" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,6"/>
-                        <TextBox x:Name="Prestige_Jake" Grid.Row="3" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-                        <TextBlock Grid.Row="4" Text="Bill" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                        <TextBox x:Name="Prestige_Bill" Grid.Row="4" Grid.Column="1" PreviewTextInput="NumberValidationTextBox" Text="0" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
-                    </Grid>
+                    <ItemsControl x:Name="SurvivorPrestigeList" Margin="0,0,0,16">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                    <Button Content="Apply Per-Character Prestige" Style="{StaticResource ActionButton}" Width="240" Height="36" Click="ApplyPerCharacterPrestige" FontSize="13"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                        <Button Content="Apply Per-Character" Style="{StaticResource ActionButton}" Width="160" Height="36" Click="ApplyPerCharacterPrestige" FontSize="13" Margin="0,0,8,0"/>
+                        <Button Content="Set All Max" Style="{StaticResource SecondaryButton}" Width="120" Height="36" Click="SetAllMax" FontSize="13" Margin="8,0,8,0"/>
+                        <Button Content="Set Random" Style="{StaticResource SecondaryButton}" Width="120" Height="36" Click="SetAllRandom" FontSize="13"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

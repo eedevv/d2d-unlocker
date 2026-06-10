@@ -163,7 +163,7 @@ namespace d2d
 
                 if (profile.FullProfile)
                 {
-                    Classes.Utils.UpdateProfiles(int.Parse(profile.PrestigeLevelBox.Text), int.Parse(profile.ItemAmountBox.Text));
+                    Classes.Utils.UpdateProfiles(int.Parse(profile.PrestigeLevelBox.Text), int.Parse(profile.ItemAmountBox.Text), profile.GetPerCharacterPrestige());
                 }
 
                 if (Classes.FiddlerCore.FiddlerIsRunning)
@@ -177,6 +177,7 @@ namespace d2d
                 UpdateText.Text = "Awaiting Fiddler Launch...";
 
                 Classes.FiddlerCore.StartFiddlerCore();
+                Classes.FiddlerCore.StartWithoutShutdown();
 
                 UpdateText.Text = "Awaiting Game Launch...";
                 Classes.Launcher.LaunchDBD(CurrentType);
@@ -257,6 +258,13 @@ namespace d2d
                 {
                     Spinner.Visibility = Visibility.Hidden;
                     Check.Visibility = Visibility.Visible;
+
+                    string grabbedCookie = Classes.CookieHandler.GetCookie();
+                    if (!string.IsNullOrEmpty(grabbedCookie))
+                    {
+                        cookie.CookieBox.Text = grabbedCookie;
+                        cookie.UpdateText.Text = "Cookie auto-grabbed!";
+                    }
                 }));
 
                 await Task.Delay(2000);
@@ -265,6 +273,11 @@ namespace d2d
                 {
                     Check.Visibility = Visibility.Hidden;
                     Launch.Visibility = Visibility.Visible;
+
+                    if (!string.IsNullOrEmpty(Classes.CookieHandler.GetCookie()))
+                    {
+                        cookie.Check.Visibility = Visibility.Visible;
+                    }
                 }));
 
                 await Task.Delay(2000);

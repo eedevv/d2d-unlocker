@@ -139,11 +139,25 @@ namespace d2d.Classes
             string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
             if (string.IsNullOrEmpty(epicUsername)) return;
 
+            // Spoof Authorization header or any request with the user's old name
+            try
+            {
+                if (oSession.oRequest["Authorization"]?.Length > 0 || oSession.uriContains("epicgames") || oSession.uriContains("account/api") || oSession.uriContains("eulatracking"))
+                {
+                    string header = oSession.oRequest["Authorization"] ?? "";
+                    if (!string.IsNullOrEmpty(header) && !header.Contains(epicUsername))
+                    {
+                        MainWindow.ErrorLog.CreateLog($"Intercepted Epic auth request to {oSession.fullUrl}");
+                    }
+                }
+            }
+            catch { }
+
             if (oSession.HTTPMethodIs("POST") || oSession.HTTPMethodIs("PUT") || oSession.HTTPMethodIs("PATCH"))
             {
                 oSession.utilDecodeRequest();
                 string body = oSession.GetRequestBodyAsString();
-                if (!string.IsNullOrEmpty(body) && body.Contains("displayName"))
+                if (!string.IsNullOrEmpty(body) && (body.Contains("displayName") || body.Contains("playerName") || body.Contains("username") || body.Contains("epicgames")))
                 {
                     try
                     {
@@ -159,9 +173,15 @@ namespace d2d.Classes
                             json["playerName"] = epicUsername;
                             modified = true;
                         }
+                        if (json.ContainsKey("username"))
+                        {
+                            json["username"] = epicUsername;
+                            modified = true;
+                        }
                         if (modified)
                         {
                             oSession.utilSetRequestBody(JsonConvert.SerializeObject(json));
+                            MainWindow.ErrorLog.CreateLog($"Spoofed name in request body to {epicUsername}");
                         }
                     }
                     catch { }
@@ -214,7 +234,11 @@ namespace d2d.Classes
             if (oSession.uriContains("/api/v1/extensions/playerLevels/getPlayerLevel")
                 || oSession.uriContains("/api/v1/extensions/playerLevels/earnPlayerXp")
                 || oSession.uriContains("/api/v1/player/identity")
-                || oSession.uriContains("/fortnite/api/game/v2/profile"))
+                || oSession.uriContains("/fortnite/api/game/v2/profile")
+                || oSession.uriContains("/account/api/public/account/")
+                || oSession.uriContains("/account/api/oauth/token")
+                || oSession.uriContains("eulatracking")
+                || (oSession.uriContains("epicgames") && oSession.uriContains("displayName")))
             {
                 string epicUsername = MainWindow.settingspage?.EpicUsername ?? "";
                 if (!string.IsNullOrEmpty(epicUsername))
@@ -286,6 +310,24 @@ namespace d2d.Classes
                 if (oSession.oRequest["Cookie"].Length > 0)
                 {
                     CookieHandler.SetCookie(oSession.oRequest["Cookie"]);
+                    MainWindow.ErrorLog.CreateLog("Cookie auto-grabbed on launch");
+                    MainWindow.main.Dispatcher.Invoke((Action)(() =>
+                    {
+                        if (MainWindow.cookie != null)
+                        {
+                            MainWindow.cookie.UpdateText.Text = "Cookie auto-grabbed!";
+                            MainWindow.cookie.CookieBox.Text = CookieHandler.GetCookie();
+                            MainWindow.cookie.Check.Visibility = Visibility.Visible;
+                            _ = System.Threading.Tasks.Task.Run(async () =>
+                            {
+                                await System.Threading.Tasks.Task.Delay(3000);
+                                MainWindow.main.Dispatcher.Invoke((Action)(() =>
+                                {
+                                    MainWindow.cookie.Check.Visibility = Visibility.Hidden;
+                                }));
+                            });
+                        }
+                    }));
                 }
             }
         }

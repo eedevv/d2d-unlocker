@@ -107,21 +107,49 @@ namespace d2d
         {
             try
             {
-                var mods = new System.Collections.Generic.Dictionary<string, string>
+                string configDir = Classes.Utils.GetGameINIDir();
+                if (string.IsNullOrEmpty(configDir))
                 {
-                    ["KillerFOV"] = ((int)FOV_KillerSlider.Value).ToString(),
-                    ["SurvivorFOV"] = ((int)FOV_SurvivorSlider.Value).ToString()
-                };
-                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string engineIni = System.IO.Path.Combine(localAppData, "d2d", "Mods", "FOV", "Engine.ini");
-                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(engineIni));
-                using (var writer = new System.IO.StreamWriter(engineIni))
-                {
-                    writer.WriteLine("[SystemSettings]");
-                    writer.WriteLine($"KillerFOV={mods["KillerFOV"]}");
-                    writer.WriteLine($"SurvivorFOV={mods["SurvivorFOV"]}");
+                    MessageBox.Show("Could not determine game config directory.");
+                    return;
                 }
-                MessageBox.Show("FOV settings saved! They will apply on next game launch.");
+                string engineIni = System.IO.Path.Combine(configDir, "Engine.ini");
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(engineIni));
+
+                var lines = new System.Collections.Generic.List<string>();
+                if (System.IO.File.Exists(engineIni))
+                    lines.AddRange(System.IO.File.ReadAllLines(engineIni));
+
+                int killerFov = (int)FOV_KillerSlider.Value;
+                int survivorFov = (int)FOV_SurvivorSlider.Value;
+
+                lines.RemoveAll(l => l.Trim().StartsWith("AspectRatioAxisConstraint="));
+
+                bool hasSection = false;
+                int sectionIndex = -1;
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    if (lines[i].Trim().Equals("[/script/engine.localplayer]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasSection = true;
+                        sectionIndex = i;
+                        break;
+                    }
+                }
+
+                if (!hasSection)
+                {
+                    lines.Add("[/script/engine.localplayer]");
+                    lines.Add($"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
+                }
+                else
+                {
+                    lines.Insert(sectionIndex + 1, $"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
+                }
+
+                System.IO.File.WriteAllLines(engineIni, lines);
+                MessageBox.Show($"FOV applied! Killer: {killerFov}, Survivor: {survivorFov}");
+                MainWindow.ErrorLog.CreateLog($"FOV written to {engineIni}");
             }
             catch (Exception ex)
             {

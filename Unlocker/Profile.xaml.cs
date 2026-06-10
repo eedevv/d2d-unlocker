@@ -1,7 +1,9 @@
-﻿using Steamworks;
-using System;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +11,18 @@ using System.Windows.Input;
 
 namespace d2d
 {
+    public class CharacterEntry : INotifyPropertyChanged
+    {
+        public string Name { get; set; }
+        private string _prestigeValue = "0";
+        public string PrestigeValue
+        {
+            get => _prestigeValue;
+            set { _prestigeValue = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PrestigeValue))); }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+
     public partial class Profile : Page
     {
         /* Profile Types */
@@ -30,19 +44,41 @@ namespace d2d
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "d2d", "Configs", "PerCharacterPrestige.json");
 
-        private static readonly Dictionary<string, string> PrestigeTextBoxMap = new Dictionary<string, string>
+        internal ObservableCollection<CharacterEntry> Killers { get; } = new ObservableCollection<CharacterEntry>();
+        internal ObservableCollection<CharacterEntry> Survivors { get; } = new ObservableCollection<CharacterEntry>();
+
+        private static readonly string[] KillerNames =
         {
-            {"Trapper", "Prestige_Trapper"}, {"Wraith", "Prestige_Wraith"},
-            {"Hillbilly", "Prestige_Hillbilly"}, {"Nurse", "Prestige_Nurse"},
-            {"Huntress", "Prestige_Huntress"},
-            {"Dwight", "Prestige_Dwight"}, {"Meg", "Prestige_Meg"},
-            {"Claudette", "Prestige_Claudette"}, {"Jake", "Prestige_Jake"},
-            {"Bill", "Prestige_Bill"}
+            "Trapper", "Wraith", "Hillbilly", "Nurse", "Huntress", "Shape", "Hag", "Doctor",
+            "Clown", "Spirit", "Legion", "Plague", "GhostFace", "Oni", "Deathslinger",
+            "Executioner", "Blight", "Twins", "Trickster", "Nemesis", "Cenobite", "Artist",
+            "Onryo", "Dredge", "Mastermind", "Knight", "SkullMerchant", "Singularity",
+            "Xenomorph", "Chucky", "Unknown", "Lich", "DarkLord"
         };
+
+        private static readonly string[] SurvivorNames =
+        {
+            "Dwight", "Meg", "Claudette", "Jake", "Bill", "Nea", "Laurie", "Ace",
+            "Feng", "David", "Kate", "Quentin", "Tapp", "Adam", "Jeff", "Jane",
+            "Ash", "Nancy", "Steve", "Yui", "Zarina", "Cheryl", "Felix", "Elodie",
+            "YunJin", "Mikaela", "Jonah", "Yoichi", "Haddie", "Ada", "Rebecca",
+            "Vittorio", "Thalita", "Renato", "Gabriel", "Nicolas", "Ellen", "Lara"
+        };
+
+        internal Dictionary<string, TextBox> PrestigeTextBoxMap = new Dictionary<string, TextBox>();
 
         public Profile()
         {
             InitializeComponent();
+
+            foreach (var name in KillerNames)
+                Killers.Add(new CharacterEntry { Name = name, PrestigeValue = "0" });
+            foreach (var name in SurvivorNames)
+                Survivors.Add(new CharacterEntry { Name = name, PrestigeValue = "0" });
+
+            KillerPrestigeList.ItemsSource = Killers;
+            SurvivorPrestigeList.ItemsSource = Survivors;
+
             LoadPerCharacterPrestige();
         }
 
@@ -214,14 +250,10 @@ namespace d2d
                 var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
                 if (data == null) return;
                 PerCharacterPrestige = data;
-                foreach (var kvp in PerCharacterPrestige)
+                foreach (var entry in Killers.Concat(Survivors))
                 {
-                    if (PrestigeTextBoxMap.ContainsKey(kvp.Key))
-                    {
-                        var textBox = FindName(PrestigeTextBoxMap[kvp.Key]) as TextBox;
-                        if (textBox != null)
-                            textBox.Text = kvp.Value.ToString();
-                    }
+                    if (PerCharacterPrestige.ContainsKey(entry.Name))
+                        entry.PrestigeValue = PerCharacterPrestige[entry.Name].ToString();
                 }
             }
             catch { }
@@ -239,18 +271,35 @@ namespace d2d
             catch { }
         }
 
+        internal Dictionary<string, int> GetPerCharacterPrestige()
+        {
+            var result = new Dictionary<string, int>();
+            foreach (var entry in Killers.Concat(Survivors))
+            {
+                if (int.TryParse(entry.PrestigeValue, out int val) && val > 0)
+                    result[entry.Name] = Math.Max(0, Math.Min(100, val));
+            }
+            return result;
+        }
+
         private void ApplyPerCharacterPrestige(object sender, RoutedEventArgs e)
         {
-            foreach (var kvp in PrestigeTextBoxMap)
-            {
-                var textBox = FindName(kvp.Value) as TextBox;
-                if (textBox != null && int.TryParse(textBox.Text, out int val))
-                {
-                    PerCharacterPrestige[kvp.Key] = Math.Max(0, Math.Min(100, val));
-                }
-            }
+            PerCharacterPrestige = GetPerCharacterPrestige();
             SavePerCharacterPrestige();
             MessageBox.Show("Per-character prestige values saved!");
+        }
+
+        private void SetAllMax(object sender, RoutedEventArgs e)
+        {
+            foreach (var entry in Killers.Concat(Survivors))
+                entry.PrestigeValue = "100";
+        }
+
+        private void SetAllRandom(object sender, RoutedEventArgs e)
+        {
+            Random rng = new Random();
+            foreach (var entry in Killers.Concat(Survivors))
+                entry.PrestigeValue = rng.Next(1, 101).ToString();
         }
     }
 }

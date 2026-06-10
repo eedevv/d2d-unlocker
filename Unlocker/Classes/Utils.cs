@@ -71,7 +71,7 @@ namespace d2d.Classes
             MainWindow.ErrorLog.CreateLog("We were unable to fetch the latest market files, so the embedded ones were used instead.");
         }
 
-        internal static void UpdateProfiles(int Prestige, int itemAmount)
+        internal static void UpdateProfiles(int defaultPrestige, int itemAmount, Dictionary<string, int> perCharacterPrestige = null)
         {
             int realItemAmount = itemAmount / 2;
 
@@ -84,7 +84,16 @@ namespace d2d.Classes
 
             for (int i = 0; i < Profile_JSON["list"].Count(); i++)
             {
-                Profile_JSON["list"][i]["prestigeLevel"] = Prestige;
+                int prestige = defaultPrestige;
+                if (perCharacterPrestige != null && perCharacterPrestige.Count > 0)
+                {
+                    string charName = Profile_JSON["list"][i]["name"]?.ToString() ?? Profile_JSON["list"][i]["characterName"]?.ToString() ?? "";
+                    if (!string.IsNullOrEmpty(charName) && perCharacterPrestige.ContainsKey(charName))
+                    {
+                        prestige = perCharacterPrestige[charName];
+                    }
+                }
+                Profile_JSON["list"][i]["prestigeLevel"] = prestige;
 
                 for (int q = 0; q < Profile_JSON["list"][i]["characterItems"].Count(); q++)
                 {
@@ -95,7 +104,7 @@ namespace d2d.Classes
                 }
             }
 
-            Bloodweb_JSON["prestigeLevel"] = Prestige;
+            Bloodweb_JSON["prestigeLevel"] = defaultPrestige;
             for (int i = 0; i < Bloodweb_JSON["characterItems"].Count(); i++)
             {
                 if ((int)Bloodweb_JSON["characterItems"][i]["quantity"] > 3)
@@ -153,25 +162,17 @@ namespace d2d.Classes
             string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string ConfigPath = LocalAppData + "\\DeadByDaylight\\Saved\\Config";
 
-            bool EGS = MainWindow.CurrentType == "EGS";
-
-            string FinalPath = null;
-
-            if (EGS) FinalPath = ConfigPath + "\\EGS";
-
-            if (!EGS)
+            switch (MainWindow.CurrentType)
             {
-                if(Directory.Exists(ConfigPath + "\\WindowsNoEditor"))
-                {
-                    FinalPath = ConfigPath + "\\WindowsNoEditor";
-                }
-                else
-                {
-                    FinalPath = ConfigPath + "\\WindowsClient";
-                }
+                case "EGS":
+                    return ConfigPath + "\\EGS";
+                case "MS":
+                    return ConfigPath + "\\WinGDK";
+                default:
+                    if (Directory.Exists(ConfigPath + "\\WindowsNoEditor"))
+                        return ConfigPath + "\\WindowsNoEditor";
+                    return ConfigPath + "\\WindowsClient";
             }
-
-            return FinalPath;
         }
 
         internal static bool IsGameCurrentlyRunning(string TYPE)
