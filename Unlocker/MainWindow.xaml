@@ -8,13 +8,6 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="d2d" Height="650" Width="950" ResizeMode="CanMinimize" WindowStyle="None" AllowsTransparency="True">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 
     <Grid>
         <Border Background="{StaticResource BgDark}" CornerRadius="8" Margin="0">
