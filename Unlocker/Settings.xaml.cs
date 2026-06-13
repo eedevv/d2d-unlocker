@@ -131,6 +131,7 @@ namespace d2d
 
         private void WriteFOVToEngineIni(string configDir, int killerFov, int survivorFov)
         {
+            System.IO.Directory.CreateDirectory(configDir);
             string engineIni = System.IO.Path.Combine(configDir, "Engine.ini");
             var lines = new System.Collections.Generic.List<string>();
             if (System.IO.File.Exists(engineIni))
@@ -165,6 +166,7 @@ namespace d2d
 
         private void WriteFOVToGameUserSettings(string configDir, int killerFov, int survivorFov)
         {
+            System.IO.Directory.CreateDirectory(configDir);
             string gameUserSettings = System.IO.Path.Combine(configDir, "GameUserSettings.ini");
             var lines = new System.Collections.Generic.List<string>();
             if (System.IO.File.Exists(gameUserSettings))

@@ -71,6 +71,9 @@ namespace d2d
         {
             InitializeComponent();
 
+            PrestigeLevelBox.Text = "100";
+            ItemAmountBox.Text = "100";
+
             foreach (var name in KillerNames)
                 Killers.Add(new CharacterEntry { Name = name, PrestigeValue = "0" });
             foreach (var name in SurvivorNames)

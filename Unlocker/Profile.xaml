@@ -60,12 +60,12 @@
 
                         <StackPanel Grid.Column="0" Margin="0,0,12,0">
                             <TextBlock Text="Item Amount" Style="{StaticResource Label}" Margin="0,0,0,8"/>
-                            <TextBox x:Name="ItemAmountBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource Input}" Width="120"/>
+                            <TextBox x:Name="ItemAmountBox" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="120"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="12,0,0,0">
                             <TextBlock Text="Prestige Level" Style="{StaticResource Label}" Margin="0,0,0,8"/>
-                            <TextBox x:Name="PrestigeLevelBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource Input}" Width="120"/>
+                            <TextBox x:Name="PrestigeLevelBox" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="120"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

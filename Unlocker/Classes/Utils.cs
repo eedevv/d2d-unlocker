@@ -44,7 +44,7 @@ namespace d2d.Classes
         internal static string GetGamePakDir()
         {
             string AppDir = Environment.CurrentDirectory;
-            string DBDPath = Path.Combine(AppDir, "dbdPath.txt"); ;
+            string DBDPath = Path.Combine(AppDir, "dbdPath.txt");
 
             if (!File.Exists(DBDPath)) return null;
 
