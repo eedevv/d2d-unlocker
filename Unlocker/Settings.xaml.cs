@@ -34,7 +34,6 @@ namespace d2d
         private void Switch_Platform(object sender, RoutedEventArgs e)
         {
             Classes.CookieHandler.ResetCookie();
-            MainWindow.cookie.CookieBox.Text = "";
 
             if (MainWindow.CurrentType == "Steam")
             {
@@ -113,49 +112,89 @@ namespace d2d
                     MessageBox.Show("Could not determine game config directory.");
                     return;
                 }
-                string engineIni = System.IO.Path.Combine(configDir, "Engine.ini");
-                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(engineIni));
-
-                var lines = new System.Collections.Generic.List<string>();
-                if (System.IO.File.Exists(engineIni))
-                    lines.AddRange(System.IO.File.ReadAllLines(engineIni));
 
                 int killerFov = (int)FOV_KillerSlider.Value;
                 int survivorFov = (int)FOV_SurvivorSlider.Value;
 
-                lines.RemoveAll(l => l.Trim().StartsWith("AspectRatioAxisConstraint="));
+                WriteFOVToEngineIni(configDir, killerFov, survivorFov);
+                WriteFOVToGameUserSettings(configDir, killerFov, survivorFov);
 
-                bool hasSection = false;
-                int sectionIndex = -1;
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    if (lines[i].Trim().Equals("[/script/engine.localplayer]", StringComparison.OrdinalIgnoreCase))
-                    {
-                        hasSection = true;
-                        sectionIndex = i;
-                        break;
-                    }
-                }
-
-                if (!hasSection)
-                {
-                    lines.Add("[/script/engine.localplayer]");
-                    lines.Add($"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
-                }
-                else
-                {
-                    lines.Insert(sectionIndex + 1, $"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
-                }
-
-                System.IO.File.WriteAllLines(engineIni, lines);
                 MessageBox.Show($"FOV applied! Killer: {killerFov}, Survivor: {survivorFov}");
-                MainWindow.ErrorLog.CreateLog($"FOV written to {engineIni}");
+                MainWindow.ErrorLog.CreateLog($"FOV written to {configDir}");
             }
             catch (Exception ex)
             {
                 MainWindow.ErrorLog.CreateLog($"FOV apply error: {ex.Message}");
                 MessageBox.Show($"Failed to save FOV: {ex.Message}");
             }
+        }
+
+        private void WriteFOVToEngineIni(string configDir, int killerFov, int survivorFov)
+        {
+            string engineIni = System.IO.Path.Combine(configDir, "Engine.ini");
+            var lines = new System.Collections.Generic.List<string>();
+            if (System.IO.File.Exists(engineIni))
+                lines.AddRange(System.IO.File.ReadAllLines(engineIni));
+
+            lines.RemoveAll(l => l.Trim().StartsWith("AspectRatioAxisConstraint="));
+
+            bool hasSection = false;
+            int sectionIndex = -1;
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Trim().Equals("[/script/engine.localplayer]", StringComparison.OrdinalIgnoreCase))
+                {
+                    hasSection = true;
+                    sectionIndex = i;
+                    break;
+                }
+            }
+
+            if (!hasSection)
+            {
+                lines.Add("[/script/engine.localplayer]");
+                lines.Add($"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
+            }
+            else
+            {
+                lines.Insert(sectionIndex + 1, $"AspectRatioAxisConstraint=AspectRatio_MaintainYFOV");
+            }
+
+            System.IO.File.WriteAllLines(engineIni, lines);
+        }
+
+        private void WriteFOVToGameUserSettings(string configDir, int killerFov, int survivorFov)
+        {
+            string gameUserSettings = System.IO.Path.Combine(configDir, "GameUserSettings.ini");
+            var lines = new System.Collections.Generic.List<string>();
+            if (System.IO.File.Exists(gameUserSettings))
+                lines.AddRange(System.IO.File.ReadAllLines(gameUserSettings));
+
+            lines.RemoveAll(l => l.Trim().StartsWith("FOV="));
+
+            bool hasSection = false;
+            int sectionIndex = -1;
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Trim().Equals("[/script/deadbydaylight.dbdgameuserettings]", StringComparison.OrdinalIgnoreCase))
+                {
+                    hasSection = true;
+                    sectionIndex = i;
+                    break;
+                }
+            }
+
+            if (!hasSection)
+            {
+                lines.Add("[/script/deadbydaylight.dbdgameuserettings]");
+                lines.Add($"FOV={killerFov}");
+            }
+            else
+            {
+                lines.Insert(sectionIndex + 1, $"FOV={killerFov}");
+            }
+
+            System.IO.File.WriteAllLines(gameUserSettings, lines);
         }
     }
 }

@@ -7,16 +7,15 @@
       mc:Ignorable="d"
       d:DesignHeight="650" d:DesignWidth="950"
       Title="UpdateScreen"
-      Background="{StaticResource BgDark}">
+      Background="{StaticResource Bg}">
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="d2d" FontSize="48" FontWeight="Bold" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center"/>
+            <TextBlock Text="d2d" FontSize="48" FontWeight="Bold" Foreground="{StaticResource Text}" HorizontalAlignment="Center"/>
             <TextBlock x:Name="UpdateText" Text="Checking for Updates..." FontSize="20" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,12,0,24"/>
-
             <fa:ImageAwesome x:Name="Spinner" Visibility="Visible" Foreground="{StaticResource Accent}" Icon="Refresh" Spin="True" Height="48" Width="48" HorizontalAlignment="Center"/>
-            <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="#4CAF50" Icon="Check" Height="48" Width="48" HorizontalAlignment="Center"/>
-            <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="{StaticResource Accent}" Icon="Times" Height="48" Width="48" HorizontalAlignment="Center"/>
+            <fa:ImageAwesome x:Name="Check" Visibility="Hidden" Foreground="{StaticResource Success}" Icon="Check" Height="48" Width="48" HorizontalAlignment="Center"/>
+            <fa:ImageAwesome x:Name="Error" Visibility="Hidden" Foreground="{StaticResource Warning}" Icon="Times" Height="48" Width="48" HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -41,107 +41,6 @@ namespace d2d.Classes
             return Convert.ToInt32(num);
         }
 
-        private static string FullProfilePath = Settings.ProfilePath + "/Profile.json";
-        private static string BloodWebPath = Settings.ProfilePath + "/Bloodweb.json";
-        private static string SkinsItemsPath = Settings.ProfilePath + "/SkinsWithItems.json";
-
-        internal static void DoFileCheck()
-        {
-            if(!File.Exists(FullProfilePath))
-                RewriteMarketFiles();
-
-            if (!File.Exists(BloodWebPath))
-                RewriteMarketFiles();
-
-            if (!File.Exists(SkinsItemsPath))
-                RewriteMarketFiles();
-        }
-
-        private static void RewriteMarketFiles()
-        {
-            File.WriteAllBytes(Settings.ProfilePath + "/Profile.json", Properties.Resources.Profile);
-            File.WriteAllBytes(Settings.ProfilePath + "/Bloodweb.json", Properties.Resources.Bloodweb);
-            File.WriteAllBytes(Settings.ProfilePath + "/SkinsWithItems.json", Properties.Resources.SkinsWithItems);
-            File.WriteAllBytes(Settings.ProfilePath + "/DlcOnly.json", Properties.Resources.DlcOnly);
-            File.WriteAllBytes(Settings.ProfilePath + "/SkinsPerks.json", Properties.Resources.SkinsPerks);
-            File.WriteAllBytes(Settings.ProfilePath + "/SkinsONLY.json", Properties.Resources.SkinsONLY);
-            File.WriteAllBytes(Settings.ProfilePath + "/Currency.json", Properties.Resources.Currency);
-            File.WriteAllBytes(Settings.ProfilePath + "/Level.json", Properties.Resources.Level);
-
-            MainWindow.ErrorLog.CreateLog("We were unable to fetch the latest market files, so the embedded ones were used instead.");
-        }
-
-        internal static void UpdateProfiles(int defaultPrestige, int itemAmount, Dictionary<string, int> perCharacterPrestige = null)
-        {
-            int realItemAmount = itemAmount / 2;
-
-            string Profile_Text = File.ReadAllText(FullProfilePath);
-            JObject Profile_JSON = JsonConvert.DeserializeObject<JObject>(Profile_Text);
-            string Bloodweb_Text = File.ReadAllText(BloodWebPath);
-            JObject Bloodweb_JSON = JsonConvert.DeserializeObject<JObject>(Bloodweb_Text);
-            string SkinsItems_Text = File.ReadAllText(SkinsItemsPath);
-            JObject SkinsItems_JSON = JsonConvert.DeserializeObject<JObject>(SkinsItems_Text);
-
-            for (int i = 0; i < Profile_JSON["list"].Count(); i++)
-            {
-                int prestige = defaultPrestige;
-                if (perCharacterPrestige != null && perCharacterPrestige.Count > 0)
-                {
-                    string charName = Profile_JSON["list"][i]["name"]?.ToString() ?? Profile_JSON["list"][i]["characterName"]?.ToString() ?? "";
-                    if (!string.IsNullOrEmpty(charName) && perCharacterPrestige.ContainsKey(charName))
-                    {
-                        prestige = perCharacterPrestige[charName];
-                    }
-                }
-                Profile_JSON["list"][i]["prestigeLevel"] = prestige;
-
-                for (int q = 0; q < Profile_JSON["list"][i]["characterItems"].Count(); q++)
-                {
-                    if ((int)Profile_JSON["list"][i]["characterItems"][q]["quantity"] > 3)
-                    {
-                        Profile_JSON["list"][i]["characterItems"][q]["quantity"] = realItemAmount;
-                    }
-                }
-            }
-
-            Bloodweb_JSON["prestigeLevel"] = defaultPrestige;
-            for (int i = 0; i < Bloodweb_JSON["characterItems"].Count(); i++)
-            {
-                if ((int)Bloodweb_JSON["characterItems"][i]["quantity"] > 3)
-                {
-                    Bloodweb_JSON["characterItems"][i]["quantity"] = realItemAmount;
-                }
-            }
-
-            for (int i = 0; i < SkinsItems_JSON["inventoryItems"].Count(); i++)
-            {
-                if ((int)SkinsItems_JSON["inventoryItems"][i]["quantity"] > 3)
-                {
-                    SkinsItems_JSON["inventoryItems"][i]["quantity"] = realItemAmount;
-                }
-            }
-
-            string Profile_Text_After = JsonConvert.SerializeObject(Profile_JSON);
-            string Bloodweb_Text_After = JsonConvert.SerializeObject(Bloodweb_JSON);
-            string SkinsItems_Text_After = JsonConvert.SerializeObject(SkinsItems_JSON);
-
-            WriteText(FullProfilePath, Profile_Text_After);
-            WriteText(BloodWebPath, Bloodweb_Text_After);
-            WriteText(SkinsItemsPath, SkinsItems_Text_After);
-        }
-
-        private static void WriteText(string path, string text)
-        {
-            using (var fs = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-            {
-                fs.SetLength(0);
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.Write(text);
-                }
-            }
-        }
-
         internal static string GetGamePakDir()
         {
             string AppDir = Environment.CurrentDirectory;
@@ -165,7 +64,7 @@ namespace d2d.Classes
             switch (MainWindow.CurrentType)
             {
                 case "EGS":
-                    return ConfigPath + "\\EGS";
+                    return ConfigPath + "\\WindowsNoEditor";
                 case "MS":
                     return ConfigPath + "\\WinGDK";
                 default:
@@ -208,52 +107,6 @@ namespace d2d.Classes
             {
                 MainWindow.main.ReturnFromLaunch("Couldn't start... Try Again", false, TYPE);
             }
-        }
-
-        internal static bool IsPakBypassRunning()
-        {
-            Process[] processesByName = Process.GetProcessesByName("PakBypass");
-
-            if (processesByName.Length > 0) return true;
-
-            return false;
-        }
-
-        internal static void UpdatedBloodweb(string returnVal)
-        {
-            string path = Settings.ProfilePath + "/Bloodweb.json";
-            int num = 0;
-            string BloodWebCharacterName = (string)JObject.Parse(returnVal)["characterName"];
-            string BloodWebJson = System.IO.File.ReadAllText(Settings.ProfilePath + "/Bloodweb.json");
-            string ProfileJson = System.IO.File.ReadAllText(Settings.ProfilePath + "/Profile.json");
-            JObject BloodWebObject = JObject.Parse(BloodWebJson);
-            foreach (JToken ProfileToken in JObject.Parse(ProfileJson)["list"])
-            {
-                if ((string)ProfileToken["characterName"] == BloodWebCharacterName)
-                {
-                    BloodWebObject["prestigeLevel"] = (JToken)(int)ProfileToken["prestigeLevel"];
-                    foreach (JToken ProfileTokenItems in ProfileToken["characterItems"])
-                    {
-                        if ((string)ProfileTokenItems["itemId"] == "AzarovKey")
-                            num = (int)ProfileTokenItems["quantity"];
-                    }
-                }
-            }
-
-            bool flag = false;
-            foreach (JToken BloodWebToken in BloodWebObject["characterItems"])
-            {
-                string ItemId = (string)BloodWebToken["itemId"];
-                if (ItemId == "Item_Camper_AlexsToolbox")
-                    flag = true;
-                if (flag)
-                    BloodWebToken["quantity"] = (JToken)num;
-                if (ItemId == "Anniversary2023Offering")
-                    break;
-            }
-
-
-            File.WriteAllText(path, BloodWebObject.ToString());
         }
 
         private class SteamRootobject

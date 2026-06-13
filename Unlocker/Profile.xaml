@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       d:DesignHeight="615" d:DesignWidth="850"
       Title="Profile"
-      Background="{StaticResource BgDark}">
+      Style="{StaticResource PageBg}">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -17,8 +17,8 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="32,32,32,32">
+    <ScrollViewer Style="{StaticResource ScrollViewer}">
+        <Grid Margin="32,32,32,32" Width="520" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -26,109 +26,131 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,28">
                 <TextBlock Text="Profile Editor" Style="{StaticResource SectionHeader}"/>
-                <TextBlock Text="Customize your in-game profile" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                <TextBlock Text="Customize your in-game character data" Style="{StaticResource SubText}"/>
             </StackPanel>
 
-            <!-- Profile Type Card -->
-            <Border Grid.Row="1" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+            <!-- Profile Type -->
+            <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="Profile Type" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                    <TextBlock Text="Profile Type" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,16"/>
 
                     <Grid Margin="0,0,0,16">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="ProfileTypeBox" IsReadOnly="True" Text="Full Profile" Style="{StaticResource DarkTextBox}" Width="160" Margin="0,0,12,0"/>
-                        <Button Grid.Column="1" x:Name="Switch" Content="Switch" Style="{StaticResource SecondaryButton}" Height="30" Width="80" Click="Switch_Profile"/>
+                        <StackPanel>
+                            <TextBlock Text="Active Profile" Style="{StaticResource Label}"/>
+                            <TextBlock Text="{Binding ElementName=ProfileTypeBox, Path=Text}" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBox x:Name="ProfileTypeBox" IsReadOnly="True" Text="Full Profile" Style="{StaticResource Input}" Width="160"/>
+                            <Button Grid.Column="1" x:Name="ProfileSwitch" Content="Switch" Style="{StaticResource SecondaryButton}" Height="32" Width="80" Margin="8,0,0,0" Click="Switch_Profile"/>
+                        </StackPanel>
                     </Grid>
 
-                    <Grid x:Name="Full" Visibility="Visible" Margin="0,8,0,0">
+                    <Grid x:Name="Full" Visibility="Visible">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                            <TextBlock Text="Item Amount" FontSize="14" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
-                            <TextBox x:Name="ItemAmountBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource DarkTextBox}" Width="120"/>
+                            <TextBlock Text="Item Amount" Style="{StaticResource Label}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="ItemAmountBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource Input}" Width="120"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                            <TextBlock Text="Prestige Level" FontSize="14" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
-                            <TextBox x:Name="PrestigeLevelBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource DarkTextBox}" Width="120"/>
+                            <TextBlock Text="Prestige Level" Style="{StaticResource Label}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="PrestigeLevelBox" PreviewTextInput="NumberValidationTextBox" Text="100" Style="{StaticResource Input}" Width="120"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <!-- Per-Character Prestige Card -->
-            <Border Grid.Row="2" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+            <!-- Per-Character Prestige -->
+            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="Per-Character Prestige" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                    <TextBlock Text="Per-Character Prestige" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
+                    <TextBlock Text="Set individual prestige levels for each character" Style="{StaticResource SubText}" Margin="0,0,0,20"/>
 
-                    <TextBlock Text="Killers" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
-                    <ItemsControl x:Name="KillerPrestigeList" Margin="0,0,0,12">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,0,0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="140"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                                    <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <TextBlock Text="Killers" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8" LetterSpacing="1"/>
+                    <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                        <ScrollViewer MaxHeight="200" Style="{StaticResource ScrollViewer}">
+                            <ItemsControl x:Name="KillerPrestigeList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Text}" VerticalAlignment="Center"/>
+                                            <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="60" HorizontalAlignment="Right" Height="28" FontSize="12"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
 
-                    <TextBlock Text="Survivors" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
-                    <ItemsControl x:Name="SurvivorPrestigeList" Margin="0,0,0,16">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,0,0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="140"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                                    <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource DarkTextBox}" Width="60" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <TextBlock Text="Survivors" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Secondary}" Margin="0,0,0,8" LetterSpacing="1"/>
+                    <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                        <ScrollViewer MaxHeight="200" Style="{StaticResource ScrollViewer}">
+                            <ItemsControl x:Name="SurvivorPrestigeList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Text}" VerticalAlignment="Center"/>
+                                            <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="60" HorizontalAlignment="Right" Height="28" FontSize="12"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                        <Button Content="Apply Per-Character" Style="{StaticResource ActionButton}" Width="160" Height="36" Click="ApplyPerCharacterPrestige" FontSize="13" Margin="0,0,8,0"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                        <Button Content="Apply" Style="{StaticResource PrimaryButton}" Width="120" Height="36" Click="ApplyPerCharacterPrestige" FontSize="13" Margin="0,0,8,0"/>
                         <Button Content="Set All Max" Style="{StaticResource SecondaryButton}" Width="120" Height="36" Click="SetAllMax" FontSize="13" Margin="8,0,8,0"/>
-                        <Button Content="Set Random" Style="{StaticResource SecondaryButton}" Width="120" Height="36" Click="SetAllRandom" FontSize="13"/>
+                        <Button Content="Set Random" Style="{StaticResource GhostButton}" Width="100" Height="36" Click="SetAllRandom" FontSize="13"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
 
-            <!-- Extras Card -->
-            <Border Grid.Row="3" Background="#2A3344" CornerRadius="8" Padding="24">
+            <!-- Extras -->
+            <Border Grid.Row="3" Style="{StaticResource Card}">
                 <StackPanel>
-                    <TextBlock Text="Extras" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                    <TextBlock Text="Extras" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,20"/>
 
-                    <Grid Margin="0,0,0,12">
+                    <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Currency Spoof" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Currency Spoof" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Spoof in-game currency amounts" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
                         <CheckBox Grid.Column="1" Click="Currency_Clicked" x:Name="CurrencySpoof" Style="{StaticResource ToggleSwitch}"/>
                     </Grid>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Level Spoof" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Level Spoof" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Spoof player level display" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
                         <CheckBox Grid.Column="1" Click="Level_Clicked" x:Name="LevelSpoof" Style="{StaticResource ToggleSwitch}"/>
                     </Grid>
                 </StackPanel>

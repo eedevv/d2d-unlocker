@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       d:DesignHeight="615" d:DesignWidth="850"
       Title="Settings"
-      Background="{StaticResource BgDark}">
+      Style="{StaticResource PageBg}">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -17,8 +17,8 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="32,32,32,32">
+    <ScrollViewer Style="{StaticResource ScrollViewer}">
+        <Grid Margin="32,32,32,32" Width="520" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -28,117 +28,153 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <StackPanel Grid.Row="0" Margin="0,0,0,28">
                 <TextBlock Text="Settings" Style="{StaticResource SectionHeader}"/>
-                <TextBlock Text="Configure your unlocker experience" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                <TextBlock Text="Configure your unlocker experience" Style="{StaticResource SubText}"/>
             </StackPanel>
 
-            <!-- General Settings Card -->
-            <Border Grid.Row="1" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+            <!-- General -->
+            <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="General" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                    <TextBlock Text="General" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,20"/>
 
-                    <Grid Margin="0,0,0,12">
+                    <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Show Overlay" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Match Overlay" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Show match info overlay during gameplay" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
                         <CheckBox Grid.Column="1" Click="Overlay_Clicked" x:Name="Overlay_Check" Style="{StaticResource ToggleSwitch}"/>
                     </Grid>
 
-                    <Grid Margin="0,0,0,12">
+                    <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Discord RPC" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Discord RPC" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Show what you're playing on Discord" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
                         <CheckBox Grid.Column="1" Click="RPC_Clicked" x:Name="RPC_Check" Style="{StaticResource ToggleSwitch}"/>
                     </Grid>
 
-                    <Grid Margin="0,0,0,12">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Hide to System Tray" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="Minimize to Tray" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Hide to system tray on game launch" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
                         <CheckBox Grid.Column="1" Click="Sys_Clicked" x:Name="Sys_Check" Style="{StaticResource ToggleSwitch}"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <!-- Platform & Name Spoofing Card -->
-            <Border Grid.Row="2" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+            <!-- Platform & Identity -->
+            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="Platform &amp; Identity" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16"/>
+                    <TextBlock Text="Platform &amp; Identity" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,20"/>
 
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Platform" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TypeBox" IsReadOnly="True" Text="Steam" Style="{StaticResource DarkTextBox}" Width="120" HorizontalAlignment="Left" Grid.Column="1"/>
-                        <Button Grid.Column="2" x:Name="Switch" Content="Switch" Style="{StaticResource SecondaryButton}" Height="30" Width="80" Margin="8,0,0,0" Click="Switch_Platform"/>
+                        <StackPanel>
+                            <TextBlock Text="Game Platform" Style="{StaticResource Label}"/>
+                            <TextBlock Text="{Binding ElementName=TypeBox, Path=Text}" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBox x:Name="TypeBox" IsReadOnly="True" Text="Steam" Style="{StaticResource Input}" Width="120"/>
+                            <Button Grid.Column="2" x:Name="Switch" Content="Switch" Style="{StaticResource SecondaryButton}" Height="32" Width="80" Margin="8,0,0,0" Click="Switch_Platform"/>
+                        </StackPanel>
                     </Grid>
 
-                    <Grid x:Name="EpicUsernameGrid" Visibility="Collapsed" Margin="0,8,0,0">
+                    <Grid x:Name="EpicUsernameGrid" Visibility="Visible" Margin="0,8,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Custom Epic Display Name" FontSize="14" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
-                        <TextBox Grid.Row="1" x:Name="EpicUsernameBox" Text="" Style="{StaticResource DarkTextBox}" Width="260" HorizontalAlignment="Left"/>
-                        <TextBlock Grid.Row="2" Text="Leave empty to use default Epic display name" Style="{StaticResource SubText}" Margin="0,4,0,0"/>
+                        <TextBlock Text="Custom Display Name" Style="{StaticResource Label}" Margin="0,0,0,8"/>
+                        <TextBox Grid.Row="1" x:Name="EpicUsernameBox" Text="" Style="{StaticResource Input}" Width="260" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="2" Text="Leave empty to use your default platform name" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,4,0,0"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <!-- FOV Settings Card -->
-            <Border Grid.Row="3" Background="#2A3344" CornerRadius="8" Padding="24" Margin="0,0,0,16">
+            <!-- FOV -->
+            <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="Field of View" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="Adjust your in-game FOV (requires Engine.ini editing)" Style="{StaticResource SubText}" Margin="0,0,0,16"/>
+                    <TextBlock Text="Field of View" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
+                    <TextBlock Text="Overrides the in-game camera FOV for both roles" Style="{StaticResource SubText}" Margin="0,0,0,24"/>
 
-                    <Grid Margin="0,0,0,16">
+                    <Grid Margin="0,0,0,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Killer FOV" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <Slider x:Name="FOV_KillerSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource DarkSlider}" Value="87" ValueChanged="FOV_Slider_Changed"/>
-                        <Label x:Name="FOV_KillerValue" Grid.Row="1" Grid.Column="1" Content="87" Foreground="{StaticResource Accent}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Killer FOV" Style="{StaticResource Label}"/>
+                                <TextBlock Grid.Column="1" Text="Default: 87" Foreground="{StaticResource TextDim}" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                        <Slider x:Name="FOV_KillerSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource Slider}" Value="87" ValueChanged="FOV_Slider_Changed"/>
+                        <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource Surface}" CornerRadius="6" Margin="8,0,0,0" Height="28">
+                            <Label x:Name="FOV_KillerValue" Content="87" Foreground="{StaticResource Accent}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0"/>
+                        </Border>
                     </Grid>
 
-                    <Grid>
+                    <Grid Margin="0,0,0,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Survivor FOV" FontSize="14" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <Slider x:Name="FOV_SurvivorSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource DarkSlider}" Value="90" ValueChanged="FOV_Slider_Changed"/>
-                        <Label x:Name="FOV_SurvivorValue" Grid.Row="1" Grid.Column="1" Content="90" Foreground="{StaticResource Accent}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Survivor FOV" Style="{StaticResource Label}"/>
+                                <TextBlock Grid.Column="1" Text="Default: 90" Foreground="{StaticResource TextDim}" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                        <Slider x:Name="FOV_SurvivorSlider" Grid.Row="1" Grid.Column="0" Style="{StaticResource Slider}" Value="90" ValueChanged="FOV_Slider_Changed"/>
+                        <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource Surface}" CornerRadius="6" Margin="8,0,0,0" Height="28">
+                            <Label x:Name="FOV_SurvivorValue" Content="90" Foreground="{StaticResource Accent}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0"/>
+                        </Border>
                     </Grid>
 
-                    <Button Content="Apply FOV" Style="{StaticResource ActionButton}" Width="160" Height="36" Margin="0,16,0,0" Click="ApplyFOV" FontSize="13"/>
+                    <Button Content="Apply FOV" Style="{StaticResource PrimaryButton}" Width="160" Height="36" Click="ApplyFOV" FontSize="13" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Border>
 
-            <!-- Version Info -->
-            <Border Grid.Row="4" Background="#2A3344" CornerRadius="8" Padding="24">
+            <!-- About -->
+            <Border Grid.Row="4" Style="{StaticResource Card}">
                 <StackPanel>
-                    <TextBlock Text="About" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8"/>
+                    <TextBlock Text="About" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,8"/>
                     <TextBlock x:Name="VersionInfo" Text="" FontSize="13" Foreground="{StaticResource TextMuted}"/>
                 </StackPanel>
             </Border>

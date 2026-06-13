@@ -14,7 +14,6 @@ namespace d2d.Classes
 	{
         internal static string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         internal static string ProfilePath = LocalAppData + "/d2d/Configs/Profiles";
-        private HttpClient WC = new HttpClient();
 
         internal Settings()
 		{
@@ -22,122 +21,6 @@ namespace d2d.Classes
             if (!Directory.Exists(LocalAppData + "/d2d/Settings")) Directory.CreateDirectory(LocalAppData + "/d2d/Settings");
             if (!Directory.Exists(LocalAppData + "/d2d/Configs")) Directory.CreateDirectory(LocalAppData + "/d2d/Configs");
             if (!Directory.Exists(LocalAppData + "/d2d/Configs/Profiles")) Directory.CreateDirectory(LocalAppData + "/d2d/Configs/Profiles");
-
-            WC.Timeout = TimeSpan.FromMinutes(5);
-
-            WC.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Chrome", "115.0.0.0"));
-            WC.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Mozilla", "5.0"));
-            WC.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("AppleWebKit", "537.36"));
-            WC.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Safari", "537.36"));
-
-            try
-            {
-                DownloadSettings();
-            }
-            catch(Exception e)
-            {
-                MainWindow.ErrorLog.CreateLog("Failed to download Market Files");
-                MainWindow.ErrorLog.CreateLog(e.Message);
-            }
-        }
-
-        private static string BaseDir = "https://raw.githubusercontent.com/eedevv/d2d-unlocker/main/MarketFiles/";
-
-        internal async Task DownloadSettings()
-        {
-            try
-            {
-                await DownloadBytes(BaseDir + "GetAll.json", LocalAppData + "/d2d/Configs/Profiles/Profile.json");
-                await DownloadBytes(BaseDir + "Bloodweb.json", LocalAppData + "/d2d/Configs/Profiles/Bloodweb.json");
-                await DownloadBytes(BaseDir + "Market.json", LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json");
-                await DownloadBytes(BaseDir + "MarketDlcOnly.json", LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json");
-                await DownloadBytes(BaseDir + "MarketWithPerks.json", LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json");
-                await DownloadBytes(BaseDir + "MarketNoSavefile.json", LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json");
-                await DownloadBytes(BaseDir + "Currency.json", LocalAppData + "/d2d/Configs/Profiles/Currency.json");
-                await DownloadBytes(BaseDir + "Level.json", LocalAppData + "/d2d/Configs/Profiles/Level.json");
-
-                UpdateInventory();
-            }
-            catch { }
-        }
-
-        List<string> InventoryFiles = new List<string>()
-            {
-                LocalAppData + "/d2d/Configs/Profiles/SkinsWithItems.json",
-                LocalAppData + "/d2d/Configs/Profiles/DlcOnly.json",
-                LocalAppData + "/d2d/Configs/Profiles/SkinsPerks.json",
-                LocalAppData + "/d2d/Configs/Profiles/SkinsONLY.json"
-            };
-
-        private void UpdateInventory()
-        {
-            foreach (string file in InventoryFiles)
-            {
-                string JSON = File.ReadAllText(file);
-                var SettingsObj = JsonConvert.DeserializeObject<Dictionary<string, object>>(JSON);
-
-                if (SettingsObj.ContainsKey("data"))
-                {
-                    JObject data = (JObject)SettingsObj["data"];
-
-                    if (data != null && data.ContainsKey("inventory"))
-                    {
-                        List<object> inventory = data["inventory"].ToObject<List<object>>();
-                        if (inventory != null)
-                        {
-                            // Shuffle the inventory list
-                            inventory = ShuffleList(inventory);
-                            data["inventory"] = JArray.FromObject(inventory);
-                        }
-                    }
-                }
-
-                string FinalJSON = JsonConvert.SerializeObject(SettingsObj);
-
-                File.WriteAllText(file, FinalJSON);
-            }
-        }
-
-        internal void UpdatePlayerId(string PlayerId)
-        {
-            foreach (string file in InventoryFiles)
-            {
-                string JSON = File.ReadAllText(file);
-                var SettingsObj = JsonConvert.DeserializeObject<Dictionary<string, object>>(JSON);
-
-                if (SettingsObj.ContainsKey("data"))
-                {
-                    JObject data = (JObject)SettingsObj["data"];
-                    
-                    data["playerId"] = PlayerId;
-                }
-
-                string FinalJSON = JsonConvert.SerializeObject(SettingsObj);
-
-                File.WriteAllText(file, FinalJSON);
-            }
-        }
-
-        private List<T> ShuffleList<T>(List<T> list)
-        {
-            Random random = new Random();
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = random.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-            return list;
-        }
-
-
-        internal async Task DownloadBytes(string uri, string output)
-        {
-            byte[] fileBytes = await WC.GetByteArrayAsync(uri);
-            File.WriteAllBytes(output, fileBytes);
         }
 
         internal static void SaveBootTime(long bootTime)
@@ -221,7 +104,6 @@ namespace d2d.Classes
             Dictionary<string, object> SettingsObj = new Dictionary<string, object>()
             {
                 ["OverlayEnabled"] = MainWindow.settingspage.OverlayEnabled,
-                ["PakBypass"] = MainWindow.PakBypass.PakBypassedThisSession,
                 ["HideOnLaunch"] = MainWindow.settingspage.HideToTray,
                 ["Platform"] = MainWindow.CurrentType,
                 ["RPC"] = MainWindow.settingspage.RPC,
@@ -263,9 +145,6 @@ namespace d2d.Classes
                 MainWindow.settingspage.Overlay_Check.IsChecked = (bool)SettingsObj["OverlayEnabled"];
             }
 
-            if (SettingsObj.ContainsKey("PakBypass"))
-                MainWindow.PakBypass.PakBypassedThisSession = (bool)SettingsObj["PakBypass"];
-
             if (SettingsObj.ContainsKey("MainX"))
                 MainWindow.main.Left = (double)SettingsObj["MainX"];
 
@@ -297,7 +176,6 @@ namespace d2d.Classes
             }
 
             LoadFOVSettings();
-            MainWindow.PakBypass.CheckForReboot();
         }
 
         internal static void SaveConfig()

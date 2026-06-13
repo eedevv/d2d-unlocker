@@ -17,7 +17,7 @@ namespace d2d.Classes
         {
             if (!SteamAPI.Init())
             {
-                MainWindow.cookie.ReturnFromCookie("Steam must be running", false);
+                MainWindow.ErrorLog.CreateLog("Cookie grab failed: Steam must be running");
                 return;
             }
 
@@ -27,7 +27,7 @@ namespace d2d.Classes
             string ticket = BitConverter.ToString(pTicket).Replace("-", string.Empty).TrimEnd('0', ' ');
             if (ticket == null)
             {
-                MainWindow.cookie.ReturnFromCookie("Ticket was null, try again", false);
+                MainWindow.ErrorLog.CreateLog("Cookie grab failed: Ticket was null");
                 return;
             }
 
@@ -38,8 +38,8 @@ namespace d2d.Classes
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://steam.live.bhvrdbd.com/api/v1/auth/provider/steam/login?token=" + ticket);
                 request.Headers.Add("Accept", "*/*");
                 request.Headers.Add("Accept-Encoding", "deflate, gzip");
-                request.Headers.Add("x-kraken-client-platform", "egs");
-                request.Headers.Add("x-kraken-client-provider", "egs");
+                request.Headers.Add("x-kraken-client-platform", "steam");
+                request.Headers.Add("x-kraken-client-provider", "steam");
                 request.Headers.Add("x-kraken-client-resolution", "1920x1080");
                 request.Headers.Add("x-kraken-client-timezone-offset", "-60");
                 request.Headers.Add("x-kraken-client-os", "10.0.22621.1.256.64bit");
@@ -54,7 +54,7 @@ namespace d2d.Classes
                         int index = sessionValue.IndexOf(";");
                         string session = sessionValue.Substring(0, index);
                         CookieHandler.SetCookie(session);
-                        MainWindow.cookie.ReturnFromCookie("Successfully Grabbed Cookie", true);
+                        MainWindow.ErrorLog.CreateLog("Cookie grabbed successfully via Steam");
                         session = null;
                     }
                 }

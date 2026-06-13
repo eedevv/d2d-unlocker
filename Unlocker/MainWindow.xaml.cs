@@ -12,13 +12,11 @@ namespace d2d
     {
         internal static Classes.AutoUpdate AutoUpdater = new Classes.AutoUpdate();
         internal static UpdateScreen UpdateScreen = new UpdateScreen();
-        internal static Cookie cookie = new Cookie();
         internal static Profile profile = new Profile();
         internal static MainWindow main;
         internal static Settings settingspage = new Settings();
         internal static Classes.ErrorLog ErrorLog = new Classes.ErrorLog();
         internal static Classes.Settings settings = new Classes.Settings();
-        internal static Classes.PakBypass PakBypass = new Classes.PakBypass();
         internal static Classes.SysTray SysTray = new Classes.SysTray();
         internal static Overlay currentOverlay;
 
@@ -119,11 +117,6 @@ namespace d2d
             ShowHome();
         }
 
-        private void Cookie_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPage(cookie);
-        }
-
         private void GoWeb(object sender, RoutedEventArgs e)
         {
             Classes.Launcher.LaunchWeb("https://github.com/eedevv/d2d-unlocker");
@@ -153,19 +146,6 @@ namespace d2d
         {
             try
             {
-                Classes.Utils.DoFileCheck();
-
-                if (Classes.Utils.IsPakBypassRunning())
-                {
-                    UpdateText.Text = "Finish Pak Bypass before launching";
-                    return;
-                }
-
-                if (profile.FullProfile)
-                {
-                    Classes.Utils.UpdateProfiles(int.Parse(profile.PrestigeLevelBox.Text), int.Parse(profile.ItemAmountBox.Text), profile.GetPerCharacterPrestige());
-                }
-
                 if (Classes.FiddlerCore.FiddlerIsRunning)
                 {
                     Classes.FiddlerCore.StopFiddlerCore();
@@ -178,6 +158,7 @@ namespace d2d
 
                 Classes.FiddlerCore.StartFiddlerCore();
                 Classes.FiddlerCore.StartWithoutShutdown();
+                Classes.FiddlerCore.StartNameSpoofing();
 
                 UpdateText.Text = "Awaiting Game Launch...";
                 Classes.Launcher.LaunchDBD(CurrentType);
@@ -258,13 +239,6 @@ namespace d2d
                 {
                     Spinner.Visibility = Visibility.Hidden;
                     Check.Visibility = Visibility.Visible;
-
-                    string grabbedCookie = Classes.CookieHandler.GetCookie();
-                    if (!string.IsNullOrEmpty(grabbedCookie))
-                    {
-                        cookie.CookieBox.Text = grabbedCookie;
-                        cookie.UpdateText.Text = "Cookie auto-grabbed!";
-                    }
                 }));
 
                 await Task.Delay(2000);
@@ -273,11 +247,6 @@ namespace d2d
                 {
                     Check.Visibility = Visibility.Hidden;
                     Launch.Visibility = Visibility.Visible;
-
-                    if (!string.IsNullOrEmpty(Classes.CookieHandler.GetCookie()))
-                    {
-                        cookie.Check.Visibility = Visibility.Visible;
-                    }
                 }));
 
                 await Task.Delay(2000);
