@@ -18,7 +18,7 @@
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="16,0,0,0" VerticalAlignment="Center">
                             <Ellipse Width="10" Height="10" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBlock Text="d2d" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" LetterSpacing="1"/>
+                            <TextBlock Text="d2d" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
                             <Button x:Name="MinimizeButton" Click="Minimize_Click" Width="36" Height="28" Background="Transparent" BorderThickness="0" Cursor="Hand">
@@ -82,12 +82,12 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Margin="0,48,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                <TextBlock Text="d2d" FontSize="72" FontWeight="Bold" Foreground="{StaticResource Text}" HorizontalAlignment="Center" FontFamily="Segoe UI" LetterSpacing="2">
+                                <TextBlock Text="d2d" FontSize="72" FontWeight="Bold" Foreground="{StaticResource Text}" HorizontalAlignment="Center" FontFamily="Segoe UI">
                                     <TextBlock.Effect>
                                         <DropShadowEffect ShadowDepth="0" Color="#E81A4A" Opacity="0.15" BlurRadius="24"/>
                                     </TextBlock.Effect>
                                 </TextBlock>
-                                <TextBlock Text="Dead by Daylight Unlocker" FontSize="16" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,6,0,0" LetterSpacing="1"/>
+                                <TextBlock Text="Dead by Daylight Unlocker" FontSize="16" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
                                     <TextBlock x:Name="VersionText" Text="d2d: v3.0" FontSize="11" Foreground="{StaticResource TextDim}" Margin="0,0,16,0"/>
                                     <TextBlock x:Name="DbdVersionText" Text="DBD: v8.5.2" FontSize="11" Foreground="{StaticResource TextDim}"/>

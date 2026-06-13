@@ -19,7 +19,7 @@
                     Margin="0,0,16,16" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                     IsHitTestVisible="False" BorderThickness="1" BorderBrush="{StaticResource BorderAccent}"/>
             <TextBlock x:Name="FB_Text" Margin="0,0,28,32" Text="d2d" Foreground="{StaticResource TextMuted}"
-                       FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold" LetterSpacing="1"
+                       FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold"
                        HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"
                        Opacity="0.7"/>
         </Grid>
@@ -33,7 +33,7 @@
                     Margin="0,0,16,16" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                     IsHitTestVisible="False" BorderThickness="1" BorderBrush="{StaticResource BorderAccent}"/>
             <TextBlock x:Name="FB_Text_Q" Margin="0,0,28,86" Text="d2d" Foreground="{StaticResource TextMuted}"
-                       FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold" LetterSpacing="1"
+                       FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold"
                        HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False"
                        Opacity="0.5"/>
             <TextBlock x:Name="InQ_Text" Margin="0,0,28,66" Text="In Queue" Foreground="{StaticResource Warning}"
