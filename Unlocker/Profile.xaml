@@ -80,40 +80,14 @@
                     <TextBlock Text="Killers" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
                     <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12" Margin="0,0,0,16">
                         <ScrollViewer MaxHeight="200" Style="{StaticResource ScrollViewer}">
-                            <ItemsControl x:Name="KillerPrestigeList">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0,0,0,4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="70"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Text}" VerticalAlignment="Center"/>
-                                            <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="60" HorizontalAlignment="Right" Height="28" FontSize="12"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel x:Name="KillerPrestigePanel"/>
                         </ScrollViewer>
                     </Border>
 
                     <TextBlock Text="Survivors" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Secondary}" Margin="0,0,0,8"/>
                     <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12" Margin="0,0,0,16">
                         <ScrollViewer MaxHeight="200" Style="{StaticResource ScrollViewer}">
-                            <ItemsControl x:Name="SurvivorPrestigeList">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0,0,0,4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="70"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Text}" VerticalAlignment="Center"/>
-                                            <TextBox Grid.Column="1" Text="{Binding PrestigeValue, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource Input}" Width="60" HorizontalAlignment="Right" Height="28" FontSize="12"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel x:Name="SurvivorPrestigePanel"/>
                         </ScrollViewer>
                     </Border>
 
@@ -122,6 +96,8 @@
                         <Button Content="Set All Max" Style="{StaticResource SecondaryButton}" Width="120" Height="36" Click="SetAllMax" FontSize="13" Margin="8,0,8,0"/>
                         <Button Content="Set Random" Style="{StaticResource GhostButton}" Width="100" Height="36" Click="SetAllRandom" FontSize="13"/>
                     </StackPanel>
+
+                    <TextBlock x:Name="PrestigeStatus" Text="" Foreground="{StaticResource Accent}" FontSize="11" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
 

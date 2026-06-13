@@ -190,6 +190,12 @@ namespace d2d
             HasStopped = false;
             Timer.Tick += CheckGameRunning;
             Timer.Start();
+
+            if (settingspage.FOV_AutoApply)
+            {
+                settingspage.StartFOVWatcher();
+                MainWindow.ErrorLog.CreateLog("FOV FileSystemWatcher started");
+            }
         }
 
         private bool HasStopped = false;
@@ -211,6 +217,7 @@ namespace d2d
                 {
                     HasStopped = true;
                     Classes.FiddlerCore.StopFiddlerCore();
+                    settingspage?.StopFOVWatcher();
                 }
             }
         }
@@ -234,6 +241,9 @@ namespace d2d
                     currentOverlay = new Overlay();
                     currentOverlay.IsHitTestVisible = false;
                 }
+
+                if (settingspage.FOV_AutoApply)
+                    settingspage.ApplyFOVNow();
 
                 this.Dispatcher.Invoke((Action)(() =>
                 {

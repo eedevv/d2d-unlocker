@@ -108,6 +108,7 @@ namespace d2d.Classes
                 ["Platform"] = MainWindow.CurrentType,
                 ["RPC"] = MainWindow.settingspage.RPC,
                 ["EpicUsername"] = MainWindow.settingspage.EpicUsername,
+                ["FOV_AutoApply"] = MainWindow.settingspage.FOV_AutoApply,
             };
 
             MainWindow.main.Dispatcher.Invoke((Action)(() =>
@@ -173,6 +174,12 @@ namespace d2d.Classes
             {
                 MainWindow.settingspage.EpicUsername = (string)SettingsObj["EpicUsername"];
                 MainWindow.settingspage.EpicUsernameBox.Text = (string)SettingsObj["EpicUsername"];
+            }
+
+            if (SettingsObj.ContainsKey("FOV_AutoApply"))
+            {
+                MainWindow.settingspage.FOV_AutoApply = (bool)SettingsObj["FOV_AutoApply"];
+                MainWindow.settingspage.FOV_AutoApplyCheck.IsChecked = (bool)SettingsObj["FOV_AutoApply"];
             }
 
             LoadFOVSettings();

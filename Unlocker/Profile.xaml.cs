@@ -1,28 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace d2d
 {
-    public class CharacterEntry : INotifyPropertyChanged
-    {
-        public string Name { get; set; }
-        private string _prestigeValue = "0";
-        public string PrestigeValue
-        {
-            get => _prestigeValue;
-            set { _prestigeValue = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PrestigeValue))); }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-
     public partial class Profile : Page
     {
         /* Profile Types */
@@ -40,12 +25,10 @@ namespace d2d
 
         /* Per-Character Prestige */
         internal Dictionary<string, int> PerCharacterPrestige = new Dictionary<string, int>();
+        internal Dictionary<string, TextBox> PrestigeTextBoxMap = new Dictionary<string, TextBox>();
         private static readonly string PrestigeFilePath = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "d2d", "Configs", "PerCharacterPrestige.json");
-
-        internal ObservableCollection<CharacterEntry> Killers { get; } = new ObservableCollection<CharacterEntry>();
-        internal ObservableCollection<CharacterEntry> Survivors { get; } = new ObservableCollection<CharacterEntry>();
 
         private static readonly string[] KillerNames =
         {
@@ -65,8 +48,6 @@ namespace d2d
             "Vittorio", "Thalita", "Renato", "Gabriel", "Nicolas", "Ellen", "Lara"
         };
 
-        internal Dictionary<string, TextBox> PrestigeTextBoxMap = new Dictionary<string, TextBox>();
-
         public Profile()
         {
             InitializeComponent();
@@ -74,15 +55,46 @@ namespace d2d
             PrestigeLevelBox.Text = "100";
             ItemAmountBox.Text = "100";
 
-            foreach (var name in KillerNames)
-                Killers.Add(new CharacterEntry { Name = name, PrestigeValue = "0" });
-            foreach (var name in SurvivorNames)
-                Survivors.Add(new CharacterEntry { Name = name, PrestigeValue = "0" });
-
-            KillerPrestigeList.ItemsSource = Killers;
-            SurvivorPrestigeList.ItemsSource = Survivors;
+            BuildCharacterRows(KillerPrestigePanel, KillerNames);
+            BuildCharacterRows(SurvivorPrestigePanel, SurvivorNames);
 
             LoadPerCharacterPrestige();
+        }
+
+        private void BuildCharacterRows(StackPanel panel, string[] names)
+        {
+            foreach (string name in names)
+            {
+                var row = new Grid { Margin = new Thickness(0, 0, 0, 4) };
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(70) });
+
+                var nameBlock = new TextBlock
+                {
+                    Text = name,
+                    FontSize = 13,
+                    Foreground = (Brush)FindResource("Text"),
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Grid.SetColumn(nameBlock, 0);
+                row.Children.Add(nameBlock);
+
+                var tb = new TextBox
+                {
+                    Text = "0",
+                    Width = 60,
+                    Height = 28,
+                    FontSize = 12,
+                    Style = (Style)FindResource("Input"),
+                    HorizontalAlignment = HorizontalAlignment.Right
+                };
+                tb.PreviewTextInput += NumberValidationTextBox;
+                Grid.SetColumn(tb, 1);
+                row.Children.Add(tb);
+
+                PrestigeTextBoxMap[name] = tb;
+                panel.Children.Add(row);
+            }
         }
 
         internal void SetProfileType(int profile)
@@ -90,11 +102,7 @@ namespace d2d
             switch (profile)
             {
                 case 0:
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        Full.Visibility = Visibility.Collapsed;
-                        ProfileTypeBox.Text = "Profile Off";
-                    }));
+                    ProfileTypeBox.Text = "Profile Off";
                     FullProfile = false;
                     Skins_Perks_Only = false;
                     Skins_Only = false;
@@ -104,11 +112,7 @@ namespace d2d
                     Disabled = false;
                     break;
                 case 1:
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        Full.Visibility = Visibility.Visible;
-                        ProfileTypeBox.Text = "Full Profile";
-                    }));
+                    ProfileTypeBox.Text = "Full Profile";
                     FullProfile = true;
                     Skins_Perks_Only = false;
                     Skins_Only = false;
@@ -118,11 +122,7 @@ namespace d2d
                     Disabled = true;
                     break;
                 case 2:
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        Full.Visibility = Visibility.Collapsed;
-                        ProfileTypeBox.Text = "Skins & Perks";
-                    }));
+                    ProfileTypeBox.Text = "Skins & Perks";
                     FullProfile = false;
                     Skins_Perks_Only = true;
                     Skins_Only = false;
@@ -132,11 +132,7 @@ namespace d2d
                     Disabled = true;
                     break;
                 case 3:
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        Full.Visibility = Visibility.Collapsed;
-                        ProfileTypeBox.Text = "Skins Only";
-                    }));
+                    ProfileTypeBox.Text = "Skins Only";
                     FullProfile = false;
                     Skins_Perks_Only = false;
                     Skins_Only = true;
@@ -146,11 +142,7 @@ namespace d2d
                     Disabled = true;
                     break;
                 case 4:
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        Full.Visibility = Visibility.Collapsed;
-                        ProfileTypeBox.Text = "DLC Only";
-                    }));
+                    ProfileTypeBox.Text = "DLC Only";
                     FullProfile = false;
                     Skins_Perks_Only = false;
                     Skins_Only = false;
@@ -164,27 +156,11 @@ namespace d2d
 
         internal int GetProfileType()
         {
-            if(Off)
-            {
-                return 0;
-            }
-            else if(FullProfile)
-            {
-                return 1;
-            }
-            else if(Skins_Perks_Only)
-            {
-                return 2;
-            }
-            else if(Skins_Only)
-            {
-                return 3;
-            }
-            else if(DLC_Only)
-            {
-                return 4;
-            }
-
+            if(Off) return 0;
+            if(FullProfile) return 1;
+            if(Skins_Perks_Only) return 2;
+            if(Skins_Only) return 3;
+            if(DLC_Only) return 4;
             return 1;
         }
 
@@ -194,11 +170,10 @@ namespace d2d
             {
                 ProfileTypeBox.Text = "Skins & Perks";
                 FullProfile = false;
-                Full.Visibility = Visibility.Collapsed;
                 Skins_Perks_Only = true;
                 Break_Skins = true;
                 Disabled = true;
-            } 
+            }
             else if (Skins_Perks_Only)
             {
                 ProfileTypeBox.Text = "Skins Only";
@@ -222,7 +197,7 @@ namespace d2d
                 Off = true;
                 Break_Skins = false;
                 Disabled = false;
-            } 
+            }
             else if (Off)
             {
                 ProfileTypeBox.Text = "Full Profile";
@@ -230,17 +205,15 @@ namespace d2d
                 FullProfile = true;
                 Break_Skins = true;
                 Disabled = true;
-                Full.Visibility = Visibility.Visible;
             }
         }
 
         private void Currency_Clicked(object sender, RoutedEventArgs e) => Currency_Spoof = !Currency_Spoof;
         private void Level_Clicked(object sender, RoutedEventArgs e) => Level_Spoof = !Level_Spoof;
 
-
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
@@ -253,10 +226,10 @@ namespace d2d
                 var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
                 if (data == null) return;
                 PerCharacterPrestige = data;
-                foreach (var entry in Killers.Concat(Survivors))
+                foreach (var kvp in PerCharacterPrestige)
                 {
-                    if (PerCharacterPrestige.ContainsKey(entry.Name))
-                        entry.PrestigeValue = PerCharacterPrestige[entry.Name].ToString();
+                    if (PrestigeTextBoxMap.ContainsKey(kvp.Key))
+                        PrestigeTextBoxMap[kvp.Key].Text = kvp.Value.ToString();
                 }
             }
             catch { }
@@ -277,10 +250,10 @@ namespace d2d
         internal Dictionary<string, int> GetPerCharacterPrestige()
         {
             var result = new Dictionary<string, int>();
-            foreach (var entry in Killers.Concat(Survivors))
+            foreach (var kvp in PrestigeTextBoxMap)
             {
-                if (int.TryParse(entry.PrestigeValue, out int val) && val > 0)
-                    result[entry.Name] = Math.Max(0, Math.Min(100, val));
+                if (int.TryParse(kvp.Value.Text, out int val) && val > 0)
+                    result[kvp.Key] = Math.Max(0, Math.Min(100, val));
             }
             return result;
         }
@@ -289,20 +262,22 @@ namespace d2d
         {
             PerCharacterPrestige = GetPerCharacterPrestige();
             SavePerCharacterPrestige();
-            MessageBox.Show("Per-character prestige values saved!");
+            PrestigeStatus.Text = $"Saved prestige for {PerCharacterPrestige.Count} characters!";
         }
 
         private void SetAllMax(object sender, RoutedEventArgs e)
         {
-            foreach (var entry in Killers.Concat(Survivors))
-                entry.PrestigeValue = "100";
+            foreach (var tb in PrestigeTextBoxMap.Values)
+                tb.Text = "100";
+            PrestigeStatus.Text = "All characters set to prestige 100";
         }
 
         private void SetAllRandom(object sender, RoutedEventArgs e)
         {
             Random rng = new Random();
-            foreach (var entry in Killers.Concat(Survivors))
-                entry.PrestigeValue = rng.Next(1, 101).ToString();
+            foreach (var tb in PrestigeTextBoxMap.Values)
+                tb.Text = rng.Next(1, 101).ToString();
+            PrestigeStatus.Text = "All characters set to random prestige values";
         }
     }
 }

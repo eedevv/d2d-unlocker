@@ -115,6 +115,18 @@
                     <TextBlock Text="Field of View" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
                     <TextBlock Text="Overrides the in-game camera FOV for both roles" Style="{StaticResource SubText}" Margin="0,0,0,24"/>
 
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Auto-apply on launch" Style="{StaticResource Label}"/>
+                            <TextBlock Text="Re-applies FOV when config changes during gameplay" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Click="FOV_AutoApply_Clicked" x:Name="FOV_AutoApplyCheck" IsChecked="True" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+
                     <Grid Margin="0,0,0,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -167,7 +179,9 @@
                         </Border>
                     </Grid>
 
-                    <Button Content="Apply FOV" Style="{StaticResource PrimaryButton}" Width="160" Height="36" Click="ApplyFOV" FontSize="13" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Apply FOV" Style="{StaticResource PrimaryButton}" Width="160" Height="36" Click="ApplyFOV" FontSize="13"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
