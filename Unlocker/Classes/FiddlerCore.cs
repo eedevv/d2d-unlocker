@@ -122,29 +122,29 @@ namespace d2d.Classes
                     string body = oSession.GetResponseBodyAsString();
                     if (string.IsNullOrEmpty(body)) return;
                     JObject json = JsonConvert.DeserializeObject<JObject>(body);
-                    if (json["list"] == null) return;
+                    if (json["list"] == null || !(json["list"] is JArray listArray)) return;
 
                     int defaultPrestige = int.TryParse(MainWindow.profile.PrestigeLevelBox.Text, out int p) ? p : 100;
                     int itemAmount = int.TryParse(MainWindow.profile.ItemAmountBox.Text, out int a) ? a / 2 : 50;
                     var perCharPrestige = MainWindow.profile.GetPerCharacterPrestige();
 
-                    for (int i = 0; i < json["list"].Count(); i++)
+                    for (int i = 0; i < listArray.Count; i++)
                     {
                         if (modifyPrestige)
                         {
                             int prestige = defaultPrestige;
-                            string charName = json["list"][i]["name"]?.ToString() ?? json["list"][i]["characterName"]?.ToString() ?? "";
+                            string charName = listArray[i]["name"]?.ToString() ?? listArray[i]["characterName"]?.ToString() ?? "";
                             if (perCharPrestige != null && !string.IsNullOrEmpty(charName) && perCharPrestige.ContainsKey(charName))
                                 prestige = perCharPrestige[charName];
-                            json["list"][i]["prestigeLevel"] = prestige;
+                            listArray[i]["prestigeLevel"] = prestige;
                         }
 
-                        if (json["list"][i]["characterItems"] != null)
+                        if (listArray[i]["characterItems"] is JArray charItems)
                         {
-                            for (int q = 0; q < json["list"][i]["characterItems"].Count(); q++)
+                            for (int q = 0; q < charItems.Count; q++)
                             {
-                                if ((int)json["list"][i]["characterItems"][q]["quantity"] > 3)
-                                    json["list"][i]["characterItems"][q]["quantity"] = itemAmount;
+                                if ((int)charItems[q]["quantity"] > 3)
+                                    charItems[q]["quantity"] = itemAmount;
                             }
                         }
                     }
@@ -165,12 +165,12 @@ namespace d2d.Classes
                     if (modifyPrestige)
                         json["prestigeLevel"] = int.TryParse(MainWindow.profile.PrestigeLevelBox.Text, out int p) ? p : 100;
 
-                    if (json["characterItems"] != null)
+                    if (json["characterItems"] is JArray bloodItems)
                     {
-                        for (int i = 0; i < json["characterItems"].Count(); i++)
+                        for (int i = 0; i < bloodItems.Count; i++)
                         {
-                            if ((int)json["characterItems"][i]["quantity"] > 3)
-                                json["characterItems"][i]["quantity"] = itemAmount;
+                            if ((int)bloodItems[i]["quantity"] > 3)
+                                bloodItems[i]["quantity"] = itemAmount;
                         }
                     }
 
@@ -186,12 +186,12 @@ namespace d2d.Classes
                     JObject json = JsonConvert.DeserializeObject<JObject>(body);
                     int itemAmount = int.TryParse(MainWindow.profile.ItemAmountBox.Text, out int a) ? a / 2 : 50;
 
-                    if (json["inventoryItems"] != null)
+                    if (json["inventoryItems"] is JArray invItems)
                     {
-                        for (int i = 0; i < json["inventoryItems"].Count(); i++)
+                        for (int i = 0; i < invItems.Count; i++)
                         {
-                            if ((int)json["inventoryItems"][i]["quantity"] > 3)
-                                json["inventoryItems"][i]["quantity"] = itemAmount;
+                            if ((int)invItems[i]["quantity"] > 3)
+                                invItems[i]["quantity"] = itemAmount;
                         }
                     }
 
